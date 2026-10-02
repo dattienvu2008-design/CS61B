@@ -1,12 +1,8 @@
 package personal_test;
 
 import game2048logic.GameLogic;
-import game2048rendering.Side;
-import org.junit.jupiter.api.*;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static tester2048.TestUtils.boardToString;
-import static tester2048.TestUtils.checkTilt;
+import org.junit.jupiter.api.*;
 
 public class personal_test {
     @Test
@@ -36,5 +32,10 @@ public class personal_test {
         Assertions.assertArrayEquals(new int[]{0,12,11,10,9}, result1, "?");
         int[] result2 = GameLogic.merged_column_of_n(board, 0, 2);
         Assertions.assertArrayEquals(new int[]{0}, result2, "?");
+    }
+
+    @Test
+    public void test_tilt_to_north(){
+
     }
 }

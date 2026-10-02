@@ -34,8 +34,15 @@ public class GameLogic {
     public static void tilt_to_north(int[][] board){
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                
+                apply_merge(board, row, col);
             }
+        }
+    }
+
+    private static void apply_merge(int[][] board, int row, int col){
+        int[] merged_column = merge(merged_column_of_n(board, row, col), board[row][col]);
+        for (int i = 0; i < merged_column.length; i++) {
+            board[row+i][col] = merged_column[i];
         }
     }
 
@@ -48,7 +55,7 @@ public class GameLogic {
         return col_arr;
     }
 
-    public static void merge(int[] col, int need_to_merged){
+    public static int[] merge(int[] col, int need_to_merged){
         /*
         * col: reverse column from the board, cut from the highest element to the element right before need_to_merged
         *      element and then add 1 more element 0 to the tail
@@ -69,5 +76,6 @@ public class GameLogic {
                 break;
             }
         }
+        return col;
     }
 }
