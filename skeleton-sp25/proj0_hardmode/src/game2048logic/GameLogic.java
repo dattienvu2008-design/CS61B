@@ -1,8 +1,6 @@
 package game2048logic;
 
 import game2048rendering.Side;
-import static game2048logic.MatrixUtils.rotateLeft;
-import static game2048logic.MatrixUtils.rotateRight;
 
 /**
  * @author  Josh Hug
@@ -22,35 +20,67 @@ public class GameLogic {
             // code in this method. You will want to write
             // helper methods. And those helper methods should
             // have helper methods.
+            tiltToNorth(board, side);
             return;
         } else if (side == Side.EAST) {
+            tiltToNorth(board, side);
+            rotate(board, side);
             return;
         } else if (side == Side.WEST) {
+            tiltToNorth(board, side);
+            rotate(board, side);
             return;
         } else { // SOUTH
+            tiltToNorth(board, side);
+            rotate(board, Side.SOUTH);
             return;
         }
     }
-    public static void tilt_to_north(int[][] board){
+
+    public static void rotate(int[][] board, Side side){
+        int[][] copy_board = new int[board.length][board[0].length];
+        int temp_x, temp_y;
+        for (int row = 0; row < board.length; row++) {
+            //Create a deepcopy of board
+            //(to prevent mutate formal board while looping)
+            System.arraycopy(board[row], 0, copy_board[row], 0, board[row].length);
+        }
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                apply_merge(board, row, col);
+                //rotating
+                temp_x = game2048rendering.access_side_xy_method.side_x(side, col, row, copy_board.length);
+                temp_y = game2048rendering.access_side_xy_method.side_y(side, col, row, copy_board.length);
+                board[temp_y][temp_x] = copy_board[row][col];
             }
         }
     }
 
-    private static void apply_merge(int[][] board, int row, int col){
-        int[] merged_column = merge(merged_column_of_n(board, row, col), board[row][col]);
-        for (int i = 0; i < merged_column.length; i++) {
-            board[row+i][col] = merged_column[i];
+    public static void tiltToNorth(int[][] board, Side side){
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[row].length; col++) {
+                apply_merge(board, row, col, side);
+            }
         }
     }
 
-    public static int[] merged_column_of_n(int[][] board, int row, int col){
-        int[] col_arr = new int[row + 1];
+    public static void apply_merge(int[][] board, int row, int col, Side side){
+        //Later: create a method to switch between rotated_x and real x instead of calling awkwardly function from Side
+        int[] merged_column = merge(merged_column_of_n(board, row, col, side), board[row][col]);
+        int rotated_x = side.x(col, row, board.length), rotated_y = side.y(col, row, board.length);
+        for (int i = 0; i <= rotated_y; i++) {
+            board[side.reverse().y(rotated_x, rotated_y-i, board.length)-i][
+                    side.reverse().x(rotated_x, rotated_y-i, board.length)] = merged_column[i] = merged_column[i];
+        }
+    }
+
+    public static int[] merged_column_of_n(int[][] board, int row, int col, Side side){
+        //x is col, y is row
+        int rotated_x = side.x(col, row, board.length), rotated_y = side.y(col, row, board.length);
+        int[] col_arr = new int[rotated_y + 1];
         col_arr[0] = 0;
-        for (int i = 1; i <= row; i++) {
-            col_arr[i] = board[row-i][col];
+        for (int i = 1; i <= rotated_y; i++) {
+            col_arr[i] = board[side.reverse().y(rotated_x, rotated_y-i, board.length)][
+                    side.reverse().x(rotated_x, rotated_y-i, board.length)];
         }
         return col_arr;
     }

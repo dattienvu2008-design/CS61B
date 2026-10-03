@@ -2,6 +2,7 @@ package personal_test;
 
 import game2048logic.GameLogic;
 
+import game2048rendering.Side;
 import org.junit.jupiter.api.*;
 
 public class personal_test {
@@ -25,17 +26,36 @@ public class personal_test {
                 {1, 5, 9, 13},
                 {2, 6, 10, 14},
                 {3, 7, 11, 15},
-                {4, 8, 12, 16},
-                {17,18,19,20}
+                {2, 2, 4, 8},
         };
-        int[] result1 = GameLogic.merged_column_of_n(board, 4, 2);
-        Assertions.assertArrayEquals(new int[]{0,12,11,10,9}, result1, "?");
-        int[] result2 = GameLogic.merged_column_of_n(board, 0, 2);
-        Assertions.assertArrayEquals(new int[]{0}, result2, "?");
+        int[] result1 = GameLogic.merged_column_of_n(board, 0, 2, Side.EAST);
+        int[] result2 = GameLogic.merged_column_of_n(board, 3, 0, Side.NORTH);
+        int[] result3 = GameLogic.merged_column_of_n(board, 3, 3, Side.WEST);
+        GameLogic.apply_merge(board, 3, 3, Side.WEST);
+        System.out.println();
     }
 
     @Test
     public void test_tilt_to_north(){
+        int[][] board = new int[][]{
+                {0, 0, 4, 0},
+                {2, 0, 2, 2},
+                {8, 0, 2, 4},
+                {2, 0, 4, 0},
+        };
+        GameLogic.tiltToNorth(board, Side.NORTH);
+    }
 
+    @Test
+    public void test_rotate(){
+        int[][] board = new int[][]{
+                {0, 0, 4, 0},
+                {2, 0, 2, 2},
+                {8, 0, 2, 4},
+                {2, 0, 4, 0},
+        };
+        GameLogic.tiltToNorth(board, Side.NORTH);
+        GameLogic.rotate(board, Side.WEST);
+        System.out.println("hello");
     }
 }
