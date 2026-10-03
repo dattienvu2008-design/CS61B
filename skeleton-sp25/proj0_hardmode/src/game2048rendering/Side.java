@@ -42,28 +42,14 @@ public enum Side {
 
     /** Return the standard x-coordinate for square (x, y) on a board
      *  of size SIZE oriented with this Side on top. */
-    public int x(int x, int y, int size) {
+    int x(int x, int y, int size) {
         return _col0 * (size - 1) + x * _drow + y * _dcol;
     }
 
     /** Return the standard y-coordinate for square (x, y) on a board
      *  of size SIZE oriented with this Side on top. */
-    public int y(int x, int y, int size) {
+    int y(int x, int y, int size) {
         return _row0 * (size - 1) - x * _dcol + y * _drow;
-    }
-
-    public Side reverse() {
-        if (this == Side.NORTH) {
-            return Side.SOUTH;
-        }
-        else if (this == Side.SOUTH) {
-            return Side.NORTH;
-        } else if (this == Side.WEST) {
-            return Side.EAST;
-        } else if (this == Side.EAST) {
-            return Side.WEST;
-        }
-        return Side.WEST; //Just to bypass compiler complain about no return, doesn't have any meaning
     }
 
     /** Parameters describing this Side, as documented in the comment at the
