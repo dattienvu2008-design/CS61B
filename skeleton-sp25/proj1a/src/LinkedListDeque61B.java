@@ -90,22 +90,37 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
 
     @Override
     public T removeFirst() {
-        T item = this.first.item;
-        this.first.prev.next = this.sentinel;
-        this.sentinel.prev = this.first = this.first.prev;
-        return item;
+        if (size != 0) {
+            T item = this.first.item;
+            this.first.prev.next = this.sentinel;
+            this.sentinel.prev = this.first = this.first.prev;
+            return item;
+        }
+        else return null;
     }
 
     @Override
     public T removeLast() {
-        T item = this.sentinel.next.item;
-        this.sentinel.next.next.prev = this.sentinel;
-        this.sentinel.next = this.sentinel.next.next;
-        return item;
+        if (size != 0) {
+            T item = this.sentinel.next.item;
+            this.sentinel.next.next.prev = this.sentinel;
+            this.sentinel.next = this.sentinel.next.next;
+            return item;
+        }
+        else return null;
     }
 
     @Override
     public T get(int index) {
+        int current_index = 0;
+        Node<T> current_node = this.sentinel.prev;
+        while (current_index < size && current_index >= 0) {
+            if (current_index == index) {
+                return current_node.item;
+            }
+            current_index++;
+            current_node = current_node.prev;
+        }
         return null;
     }
 

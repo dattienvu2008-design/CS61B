@@ -12,3 +12,13 @@ UC Berkeley CS61B (Spring 2025) - Structure and Interpretation of Computer Progr
 ## Sources
 
 - [CS61B](https://sp25.datastructur.es/)
+
+## Progress (Beta, maybe=)) )
+
+6th Oct 2026: 
+
+- **Finished** Lecture up to 6
+
+- **Finished** Project 1A
+
+- **Started** Lecture 7

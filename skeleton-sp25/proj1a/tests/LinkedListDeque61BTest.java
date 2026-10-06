@@ -59,6 +59,7 @@ public class LinkedListDeque61BTest {
      // Below, you'll write your own tests for LinkedListDeque61B.
     @Test
     public void testRemove() {
+        //Normal case
         Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
         lld1.addLast(0);   // [0]
         lld1.addLast(1);   // [0, 1]
@@ -66,8 +67,42 @@ public class LinkedListDeque61BTest {
         lld1.addLast(2);   // [-1, 0, 1, 2]
         lld1.addFirst(-2); // [-2, -1, 0, 1, 2]
         lld1.removeFirst();
-        assertThat(lld1.toList()).containsExactly(-2, -1, 0, 1).inOrder();
+        assertThat(lld1.toList()).containsExactly(-1, 0, 1, 2).inOrder();
         lld1.removeLast();
         assertThat(lld1.toList()).containsExactly(-1, 0, 1).inOrder();
+
+        //Edge 1 - only 1 case
+        Deque61B<String> lld2 = new LinkedListDeque61B<>();
+        lld2.addLast("0");
+        lld2.removeLast();
+        assertThat(lld2.toList()).isEmpty();
+        lld2.addLast("0");
+        lld2.removeFirst();
+        assertThat(lld2.toList()).isEmpty();
+    }
+    @Test
+    public void testGet() {
+         Deque61B<Integer> lld1 = new LinkedListDeque61B<>();
+        lld1.addLast(0);   // [0]
+        lld1.addLast(1);   // [0, 1]
+        lld1.addFirst(-1); // [-1, 0, 1]
+        lld1.addLast(2);   // [-1, 0, 1, 2]
+        lld1.addFirst(-2); // [-2, -1, 0, 1, 2]
+        assertThat(lld1.get(1)).isEqualTo(-1);
+        assertThat(lld1.get(0)).isEqualTo(-2);
+        assertThat(lld1.get(4)).isEqualTo(2);
+        assertThat(lld1.get(5)).isNull();
+        assertThat(lld1.get(-1)).isNull();
+        assertThat(lld1.get(-2)).isNull();
+
+        //edge: empty
+        Deque61B<Integer> empty = new LinkedListDeque61B<>();
+        assertThat(empty.get(0)).isNull();
+
+        //edge: size 1
+        Deque61B<Integer> size1 = new LinkedListDeque61B<>(2);
+        assertThat(size1.get(0)).isEqualTo(2);
+        assertThat(size1.get(-1)).isNull();
+        assertThat(size1.get(1)).isNull();
     }
 }
