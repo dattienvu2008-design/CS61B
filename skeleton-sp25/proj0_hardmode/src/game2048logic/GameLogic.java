@@ -1,8 +1,10 @@
 package game2048logic;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.princeton.cs.algs4.In;
 import game2048rendering.Side;
-import static game2048logic.MatrixUtils.rotateLeft;
-import static game2048logic.MatrixUtils.rotateRight;
 
 /**
  * @author  Josh Hug
@@ -17,6 +19,7 @@ public class GameLogic {
      */
     public static void tilt(int[][] board, Side side) {
         // fill this in
+        int size = size_of(board);
         if (side == Side.NORTH) {
             // Don't you dare try to write all of your
             // code in this method. You will want to write
@@ -31,28 +34,58 @@ public class GameLogic {
             return;
         }
     }
-    public static void tilt_to_north(int[][] board){
+
+    public static int size_of(int[][] board)/*Size of board*/{
+        int size = 0;
+        try {
+            int random, count = 0;
+            while(true){
+                random = board[count][0];
+                size++;
+                count++;
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException a){
+            return size;
+        }
+    }
+
+    public static void tilt_side(int[][] board, Side side, int size){
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                apply_merge(board, row, col);
+                apply_merge(board, row, col, side, size);
             }
         }
     }
 
-    private static void apply_merge(int[][] board, int row, int col){
-        int[] merged_column = merge(merged_column_of_n(board, row, col), board[row][col]);
+    public static void apply_merge(int[][] board, int row, int col, Side side, int size){
+        int[] merged_column = merge(merged_column_of_n(board, row, col, side, size), board[row][col]);
         for (int i = 0; i < merged_column.length; i++) {
             board[row+i][col] = merged_column[i];
         }
     }
 
-    public static int[] merged_column_of_n(int[][] board, int row, int col){
-        int[] col_arr = new int[row + 1];
-        col_arr[0] = 0;
-        for (int i = 1; i <= row; i++) {
-            col_arr[i] = board[row-i][col];
+    public static int[] merged_column_of_n(int[][] board, int row, int col, Side side, int size){
+        //int[] col_lst = new int[row + 1];
+        List<Integer> col_lst = new ArrayList<>();
+        col_lst.add(0);
+        int count = 0;
+        try {
+            int rX, rY;
+            while (true){
+                count++;
+                rX = side.x(col, row - count, size);
+                rY = side.y(col, row - count, size);
+                col_lst.add(board[rX][rY]);
+            }
         }
-        return col_arr;
+        catch (ArrayIndexOutOfBoundsException a){
+            int[] col_arr = new int[count];
+            for (int i = 0; i < count; i++) {
+                col_arr[i] = col_lst.get(i);
+            }
+            return col_arr;
+        }
     }
 
     public static int[] merge(int[] col, int need_to_merged){

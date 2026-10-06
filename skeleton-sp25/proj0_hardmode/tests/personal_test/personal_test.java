@@ -2,6 +2,7 @@ package personal_test;
 
 import game2048logic.GameLogic;
 
+import game2048rendering.Side;
 import org.junit.jupiter.api.*;
 
 public class personal_test {
@@ -25,17 +26,44 @@ public class personal_test {
                 {1, 5, 9, 13},
                 {2, 6, 10, 14},
                 {3, 7, 11, 15},
-                {4, 8, 12, 16},
-                {17,18,19,20}
+                {4, 8, 12, 16}
         };
-        int[] result1 = GameLogic.merged_column_of_n(board, 4, 2);
-        Assertions.assertArrayEquals(new int[]{0,12,11,10,9}, result1, "?");
-        int[] result2 = GameLogic.merged_column_of_n(board, 0, 2);
-        Assertions.assertArrayEquals(new int[]{0}, result2, "?");
+        int[] result1 = GameLogic.merged_column_of_n(board, 3, 2, Side.NORTH, 4);
+        int[] result2 = GameLogic.merged_column_of_n(board, 0, 2, Side.SOUTH, 4);
+        int[] result3 = GameLogic.merged_column_of_n(board, 1, 1, Side.EAST, 4);
+        int a;
+        a = 5;
     }
 
     @Test
     public void test_tilt_to_north(){
+        int[][] board = new int[][]{
+                {1,  2,  3,  4,  5},
+                {6,  7,  8,  9,  10},
+                {11, 12, 13, 14, 15},
+                {16, 17, 18, 19, 20},
+                {21, 22, 23, 24, 25}
+        };
+        System.out.println(GameLogic.size_of(board));
+    }
 
+    @Test
+    public void test_side(){
+        int[][] board = new int[][]{
+                {1,  2,  3,  4,  5},
+                {6,  7,  8,  9,  10},
+                {11, 12, 13, 14, 15},
+                {16, 17, 18, 19, 20},
+                {21, 22, 23, 24, 25}
+        };
+        Side N = Side.NORTH;
+        Side S = Side.SOUTH;
+        Side E = Side.EAST;
+        Side W = Side.WEST;
+        System.out.println(board[1][1]);
+        System.out.println(board[N.x(1,1, 5)][N.y(1, 1, 5)]);
+        System.out.println(board[S.x(1,1, 5)][S.y(1, 1, 5)]);
+        System.out.println(board[E.x(1,1, 5)][E.y(1, 1, 5)]);
+        System.out.println(board[W.x(1,1, 5)][W.y(1, 1, 5)]);
     }
 }

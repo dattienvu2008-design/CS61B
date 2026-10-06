@@ -1,5 +1,9 @@
 package game2048rendering;
 
+import org.junit.internal.runners.model.EachTestNotifier;
+
+import javax.sound.midi.Soundbank;
+
 /** Symbolic names for the four sides of a board.
  *  @author P. N. Hilfinger */
 public enum Side {
@@ -42,14 +46,24 @@ public enum Side {
 
     /** Return the standard x-coordinate for square (x, y) on a board
      *  of size SIZE oriented with this Side on top. */
-    int x(int x, int y, int size) {
+    public int x(int x, int y, int size) {
         return _col0 * (size - 1) + x * _drow + y * _dcol;
     }
 
     /** Return the standard y-coordinate for square (x, y) on a board
      *  of size SIZE oriented with this Side on top. */
-    int y(int x, int y, int size) {
+    public int y(int x, int y, int size) {
         return _row0 * (size - 1) - x * _dcol + y * _drow;
+    }
+
+    public Side reverse(){
+        if (this == NORTH){
+            return SOUTH;
+        } else if (this == SOUTH) {
+            return NORTH;
+        } else if (this == WEST) {
+            return EAST;
+        } else return WEST;
     }
 
     /** Parameters describing this Side, as documented in the comment at the
