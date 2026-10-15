@@ -1,13 +1,14 @@
 package deque;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ArrayDeque61B<T> implements Deque61B<T> {
     //Attributes: (back to private after debug)
-    public T[] lst;
-    public int size;
-    public int first, last; //first: index that addFirst will add at
+    private T[] lst;
+    private int size;
+    private int first, last; //first: index that addFirst will add at
                              //last: index that addLast will add at
 
     public ArrayDeque61B(){
@@ -30,7 +31,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     }
 
     /*
-    * Shift index by dist point
+    * Helper: Shift index by dist point
     * */
     private int index_shift(int index, int dist){
         int temp = index + dist;
@@ -41,7 +42,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     public void upsize(){
         T[] new_lst = (T[]) new Object[lst.length*2];
-        int index = index_shift(first, 1);
+        int index = index_shift(first, 2);
         for (int i = 0; i < lst.length; i++) {
             new_lst[i] = lst[index];
             index = index_shift(index, 1);
@@ -135,5 +136,10 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     @Override
     public T getRecursive(int index) {
         throw new UnsupportedOperationException("No need to implement getRecursive for proj 1b");
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Deque61BIterator<T>(this);
     }
 }

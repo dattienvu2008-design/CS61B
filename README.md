@@ -34,3 +34,9 @@ I forgot to add progress while im doing things :>
 - **Finished** Discussion.Regular 1 and 2
 
 - **Finished** Discussion.ExamPrep 1
+
+- **Started** Project 1B
+
+14 Oct 2024
+
+- **Finished** (Partial) Project 1B

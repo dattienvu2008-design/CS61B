@@ -1,5 +1,6 @@
 import deque.ArrayDeque61B;
 
+import deque.Deque61B;
 import jh61b.utils.Reflection;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,5 +22,66 @@ public class ArrayDeque61BTest {
 //
 //         assertWithMessage("Found fields that are not array or primitives").that(badFields).isEmpty();
 //     }
+@Test
+public void test_init(){
+    Deque61B<Integer> empty_lst = new ArrayDeque61B<>();
+    Deque61B<Integer> full_lst = new ArrayDeque61B<>(new Integer[]{1,2,3,4});
+    Deque61B<Integer> lst = new ArrayDeque61B<>(new Integer[]{1,2,3});
+    assertThat(empty_lst.toList()).hasSize(0);
+    assertThat(full_lst.toList()).containsExactly(1,2,3,4);
+    assertThat(lst.toList()).containsExactly(1,2,3);
+}
 
+    @Test
+    public void test_add(){
+        Deque61B<Integer> empty_lst = new ArrayDeque61B<>();
+        Deque61B<Integer> full_lst = new ArrayDeque61B<>(new Integer[]{1,2,3,4});
+        Deque61B<Integer> long_lst = new ArrayDeque61B<>();
+
+        empty_lst.addLast(1); empty_lst.addFirst(0); empty_lst.addLast(2);
+        assertThat(empty_lst.toList()).containsExactly(0,1,2);
+        full_lst.addLast(5); full_lst.addLast(6); full_lst.addFirst(0); full_lst.addLast(7);
+        full_lst.addFirst(-1); full_lst.addFirst(-2);
+        assertThat(full_lst.toList()).containsExactly(-2,-1,0,1,2,3,4,5,6,7);
+
+        for (int i = 0; i < 129; i++) {
+            long_lst.addLast(i);
+        }
+        System.out.println(long_lst.toList());
+        for (int i = 0; i < 129; i++) {
+            assertThat(long_lst.get(i)).isEqualTo(i);
+        }
+    }
+
+    @Test
+    public void test_get(){
+        Deque61B<Integer> empty_lst = new ArrayDeque61B<>();
+        Deque61B<Integer> full_lst = new ArrayDeque61B<>(new Integer[]{1,2,3,4,5,6});
+        assertThat(full_lst.get(2)).isEqualTo(3);
+        assertThat(full_lst.get(0)).isEqualTo(1);
+        assertThat(full_lst.get(5)).isEqualTo(6);
+        assertThat(full_lst.get(-1)).isNull();
+        assertThat(full_lst.get(6)).isNull();
+    }
+
+    @Test
+    public void test_remove(){
+        ArrayDeque61B<Integer> long_lst = new ArrayDeque61B<>();
+        for (int i = 0; i < 513; i++) long_lst.addFirst(i);
+        for (int i = 0; i < 385; i++) long_lst.removeFirst();
+    }
+
+    @Test
+    public void test_iterable() {
+        ArrayDeque61B<Integer> lst = new ArrayDeque61B<>();
+        int count = 0;
+        for (int i = 0; i < 50; i++) {
+            lst.addLast(i);
+        }
+        System.out.println(lst.toList());
+        for (Integer i : lst) {
+            assertThat(i).isEqualTo(count);
+            count++;
+        }
+    }
 }
