@@ -9,18 +9,6 @@ import java.util.Spliterator;
 import java.util.function.Consumer;
 
 public class LinkedListDeque61B<T> implements Deque61B<T>, Comparable<LinkedListDeque61B<T>> {
-    public static void main(String[] args) {
-        //Test area
-        Deque61B llst1 = new LinkedListDeque61B();
-        llst1.addFirst(1);
-        llst1.addFirst(2);
-        llst1.addLast(0);
-        List<Integer> converted = llst1.toList();
-        System.out.println(converted);
-        llst1.removeFirst();
-        System.out.println(llst1.toList());
-    }
-
     @Override
     public void forEach(Consumer<? super T> action) {
         Deque61B.super.forEach(action);
@@ -50,11 +38,9 @@ public class LinkedListDeque61B<T> implements Deque61B<T>, Comparable<LinkedList
     // ---------------------------------
 
     public int compareTo(LinkedListDeque61B<T> o) {
-        return Integer.compare(this.sizeOf(), o.sizeOf());
-    }
-
-    public int sizeOf(){
-        return this.size;
+        // Just to test Comparable
+        // Compare by size
+        return Integer.compare(this.size(), o.size());
     }
 
     public LinkedListDeque61B()/* Empty list */{
@@ -160,10 +146,18 @@ public class LinkedListDeque61B<T> implements Deque61B<T>, Comparable<LinkedList
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ArrayDeque61B<?>)) return false;
-        ArrayDeque61B<T> new_obj = (ArrayDeque61B<T>) o;
-        if (size != new_obj.size()) return false;
-        for (int i = 0; i < size; i++) if (this.get(i) != new_obj.get(i)) return false;
+        if (!(o instanceof Deque61B<?>)) return false;
+        Deque61B<T> lst1 = this;
+        Deque61B<T> lst2 = (Deque61B<T>) o;
+        if (lst1.size() != lst2.size()) return false;
+        for (int i = 0; i < size; i++) {
+            if (lst1.get(i) != lst2.get(i)) return false;
+        }
         return true;
+    }
+
+    @Override
+    public String toString(){
+        return toList().toString();
     }
 }

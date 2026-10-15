@@ -18,7 +18,7 @@ public class Maximizer61B {
      * You may assume that the iterable contains no nulls.
      *
      * @param iterable  the Iterable of T
-     * @param comp      the Comparator to compare elements
+     * @param comp      the Comparator tso compare elements
      * @return          the maximum element according to the comparator
      */
     public static <T> T max(Iterable<T> iterable, Comparator<T> comp) {

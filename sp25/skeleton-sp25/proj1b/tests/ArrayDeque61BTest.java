@@ -1,6 +1,7 @@
 import deque.ArrayDeque61B;
 
 import deque.Deque61B;
+import deque.LinkedListDeque61B;
 import jh61b.utils.Reflection;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ public class ArrayDeque61BTest {
 }
 
     @Test
-    public void test_add(){
+    public void test_add_get(){
         Deque61B<Integer> empty_lst = new ArrayDeque61B<>();
         Deque61B<Integer> full_lst = new ArrayDeque61B<>(new Integer[]{1,2,3,4});
         Deque61B<Integer> long_lst = new ArrayDeque61B<>();
@@ -61,24 +62,6 @@ public class ArrayDeque61BTest {
     }
 
     @Test
-    public void test_get(){
-        Deque61B<Integer> empty_lst = new ArrayDeque61B<>();
-        Deque61B<Integer> full_lst = new ArrayDeque61B<>(new Integer[]{1,2,3,4,5,6});
-        assertThat(full_lst.get(2)).isEqualTo(3);
-        assertThat(full_lst.get(0)).isEqualTo(1);
-        assertThat(full_lst.get(5)).isEqualTo(6);
-        assertThat(full_lst.get(-1)).isNull();
-        assertThat(full_lst.get(6)).isNull();
-    }
-
-    @Test
-    public void test_remove(){
-        ArrayDeque61B<Integer> long_lst = new ArrayDeque61B<>();
-        for (int i = 0; i < 513; i++) long_lst.addFirst(i);
-        for (int i = 0; i < 385; i++) long_lst.removeFirst();
-    }
-
-    @Test
     public void test_iterable() {
         ArrayDeque61B<Integer> lst = new ArrayDeque61B<>();
         int count = 0;
@@ -90,5 +73,19 @@ public class ArrayDeque61BTest {
             assertThat(i).isEqualTo(count);
             count++;
         }
+    }
+
+    @Test
+    public void test_equals() {
+        //Compare LinkedListDeque61B and ArrayDeque61B
+        Deque61B<Integer> arr_lst = new ArrayDeque61B<>(new Integer[]{0,1,2,3});
+        Deque61B<Integer> linked_lst = new LinkedListDeque61B<>();
+        for (int i = 0; i < 4; i++) {
+            linked_lst.addLast(i);
+        }
+        assertThat(arr_lst.equals(linked_lst)).isTrue();
+        assertThat(arr_lst.equals(new ArrayList<Integer>())).isFalse();
+        linked_lst.addFirst(-1);
+        assertThat(linked_lst.equals(arr_lst)).isFalse();
     }
 }

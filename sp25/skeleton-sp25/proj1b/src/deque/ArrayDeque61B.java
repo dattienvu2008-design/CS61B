@@ -137,4 +137,21 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     public Iterator<T> iterator() {
         return new Deque61BIterator<T>(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Deque61B<?>)) return false;
+        Deque61B<T> lst1 = this;
+        Deque61B<T> lst2 = (Deque61B<T>) o;
+        if (lst1.size() != lst2.size()) return false;
+        for (int i = 0; i < size; i++) {
+            if (lst1.get(i) != lst2.get(i)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString(){
+        return toList().toString();
+    }
 }
