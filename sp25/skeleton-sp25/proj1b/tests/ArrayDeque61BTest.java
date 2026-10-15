@@ -24,8 +24,8 @@ public class ArrayDeque61BTest {
 //
 //         assertWithMessage("Found fields that are not array or primitives").that(badFields).isEmpty();
 //     }
-@Test
-public void test_init(){
+    @Test
+    public void test_init(){
     List<Integer> long_lst = new ArrayList<>();
     for (int i = 0; i < 500; i++) long_lst.add(i);
     Deque61B<Integer> empty_lst = new ArrayDeque61B<>();
