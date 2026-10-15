@@ -14,7 +14,8 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     public ArrayDeque61B(){
         lst = (T[]) new Object[8];
         size = 0;
-        first = last = 0;
+        first = 7;
+        last = 0;
     }
 
     public ArrayDeque61B(T[] arr){
@@ -42,7 +43,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
 
     public void upsize(){
         T[] new_lst = (T[]) new Object[lst.length*2];
-        int index = index_shift(first, 2);
+        int index = index_shift(first, 1);
         for (int i = 0; i < lst.length; i++) {
             new_lst[i] = lst[index];
             index = index_shift(index, 1);
@@ -68,10 +69,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     public void addFirst(T x) {
         if (size() == lst.length) upsize();
         lst[first] = x;
-        if (first == last) {
-            first = index_shift(first, -1);
-            last = index_shift(last, 1);
-        } else first = index_shift(first, -1);
+        first = index_shift(first, -1);
         size++;
     }
 
@@ -79,10 +77,7 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     public void addLast(T x) {
         if (size() == lst.length) upsize();
         lst[last] = x;
-        if (first == last) {
-            first = index_shift(first, -1);
-            last = index_shift(last, 1);
-        } else last = index_shift(last, 1);
+        last = index_shift(last, 1);
         size++;
     }
 

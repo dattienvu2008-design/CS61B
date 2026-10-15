@@ -5,7 +5,9 @@ import jh61b.utils.Reflection;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -24,12 +26,14 @@ public class ArrayDeque61BTest {
 //     }
 @Test
 public void test_init(){
+    List<Integer> long_lst = new ArrayList<>();
+    for (int i = 0; i < 500; i++) long_lst.add(i);
     Deque61B<Integer> empty_lst = new ArrayDeque61B<>();
     Deque61B<Integer> full_lst = new ArrayDeque61B<>(new Integer[]{1,2,3,4});
-    Deque61B<Integer> lst = new ArrayDeque61B<>(new Integer[]{1,2,3});
+    Deque61B<Integer> long_61blst = new ArrayDeque61B<>(long_lst.toArray(new Integer[0]));
     assertThat(empty_lst.toList()).hasSize(0);
     assertThat(full_lst.toList()).containsExactly(1,2,3,4);
-    assertThat(lst.toList()).containsExactly(1,2,3);
+    assertThat(long_61blst.toList()).isEqualTo(long_lst);
 }
 
     @Test
@@ -38,19 +42,22 @@ public void test_init(){
         Deque61B<Integer> full_lst = new ArrayDeque61B<>(new Integer[]{1,2,3,4});
         Deque61B<Integer> long_lst = new ArrayDeque61B<>();
 
+        //Basic test
         empty_lst.addLast(1); empty_lst.addFirst(0); empty_lst.addLast(2);
         assertThat(empty_lst.toList()).containsExactly(0,1,2);
         full_lst.addLast(5); full_lst.addLast(6); full_lst.addFirst(0); full_lst.addLast(7);
         full_lst.addFirst(-1); full_lst.addFirst(-2);
         assertThat(full_lst.toList()).containsExactly(-2,-1,0,1,2,3,4,5,6,7);
 
-        for (int i = 0; i < 129; i++) {
-            long_lst.addLast(i);
-        }
-        System.out.println(long_lst.toList());
-        for (int i = 0; i < 129; i++) {
-            assertThat(long_lst.get(i)).isEqualTo(i);
-        }
+        //Edge test
+        for (int i = 0; i < 129; i++) long_lst.addLast(i);
+        for (int i = 0; i < 129; i++) assertThat(long_lst.get(i)).isEqualTo(i);
+        long_lst = new ArrayDeque61B<>(new Integer[]{0,1,2,3,4,5,6});
+        for (int i = 7; i < 130; i++) long_lst.addLast(i);
+        for (int i = 0; i < 130; i++) assertThat(long_lst.get(i)).isEqualTo(i);
+        long_lst = new ArrayDeque61B<>(new Integer[]{0,1,2,3,4,5,6,7});
+        for (int i = 8; i < 130; i++) long_lst.addLast(i);
+        for (int i = 0; i < 130; i++) assertThat(long_lst.get(i)).isEqualTo(i);
     }
 
     @Test
