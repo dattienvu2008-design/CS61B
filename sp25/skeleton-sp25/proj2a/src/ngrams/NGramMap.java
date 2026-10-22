@@ -1,6 +1,11 @@
 package ngrams;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.Time;
 import java.util.Collection;
+import java.util.stream.Stream;
 
 import static ngrams.TimeSeries.MAX_YEAR;
 import static ngrams.TimeSeries.MIN_YEAR;
@@ -18,12 +23,17 @@ import static ngrams.TimeSeries.MIN_YEAR;
 public class NGramMap {
 
     // TODO: Add any necessary static/instance variables.
-
+    private TimeSeries wordMap;
     /**
      * Constructs an NGramMap from WORDSFILENAME and COUNTSFILENAME.
      */
     public NGramMap(String wordsFilename, String countsFilename) {
         // TODO: Fill in this constructor. See the "NGramMap Tips" section of the spec for help.
+    try (Stream<String> lines = Files.lines(Path.of("data/" + wordsFilename));) {
+
+    } catch (IOException e){
+
+    }
     }
 
     /**
@@ -53,7 +63,7 @@ public class NGramMap {
      * Returns a defensive copy of the total number of words recorded per year in all volumes.
      */
     public TimeSeries totalCountHistory() {
-        // TODO: Fill in this method.
+        // TODO: Fill in this method. Use file 2
         return null;
     }
 

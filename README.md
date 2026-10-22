@@ -8,6 +8,7 @@ UC Berkeley CS61B (Spring 2025) - Structure and Interpretation of Computer Progr
 - 🏁 **Finished** N/A
 - ℹ️ **Java Versions I used**: 17
 - 🔗 **Link to my repo for the previous course**: [CS61A](https://github.com/dattienvu2008-design/CS61A)
+- ❗    **Important Note: Project 2 (spring 2025) does not contain data file, so instead I'll be doing Project 4 (Spring 2026) instead** 
 
 (Currently studying, the code and file may be messy, will sort later)
 
@@ -40,3 +41,9 @@ I forgot to add progress while im doing things :>
 14 Oct 2024
 
 - **Finished** (Partial) Project 1B
+
+22 Oct 2024
+
+- **Started** Project 2A
+
+- **Finished** Homework 2
