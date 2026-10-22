@@ -89,6 +89,9 @@ public class NGramMapTest {
         TimeSeries dogCount = ngm.countHistory("dog", 1850, 1876);
         assertThat(dogCount.get(1865)).isWithin(1E-10).of(75819.0);
 
+        TimeSeries onlyFish = ngm.countHistory("fish");
+        TimeSeries onlyDog = ngm.countHistory("dog");
+
         List<String> fishAndDog = new ArrayList<>();
         fishAndDog.add("fish");
         fishAndDog.add("dog");
