@@ -1,4 +1,4 @@
-# CS61A
+# CS61B
 
 UC Berkeley CS61B (Spring 2025) - Structure and Interpretation of Computer Programs - Personal Project Solution
 
