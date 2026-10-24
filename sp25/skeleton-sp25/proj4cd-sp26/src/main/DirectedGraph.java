@@ -30,7 +30,9 @@ public class DirectedGraph {
         HashSet<Node> h277 = DirectedGraph.getHyponymsNodes(graph.getNode(277), graph);
         HashSet<Node> h44609 = DirectedGraph.getHyponymsNodes(graph.getNode(44609), graph);
         Set<String> h44609str = graph.getHyponyms("gum");
-        TreeMap<Integer, HashSet<String>> h44609weight = graph.getWeightedHyponyms("mom", 2000,2020);
+        TreeMap<Integer, HashSet<String>> h44609weight1 = graph.getWeightedHyponyms("mom", 2000,2020);
+        TreeMap<Integer, HashSet<String>> h44609weight2 = graph.getWeightedHyponyms("cat", 2000,2020);
+        TreeMap<Integer, HashSet<String>> h44609weight3 = graph.getWeightedHyponyms("boat", 2000,2020);
         System.out.println("hello");
     }
 
@@ -136,7 +138,7 @@ public class DirectedGraph {
     * return null if the word does not exist (in data set)
     * */
     public TreeMap<Integer, HashSet<String>> getWeightedHyponyms(String word, int startYear, int endYear) {
-        //Need modified
+        //Just for debugging=)) (I created this one for 4D but now... unused .-.)
         HashSet<Node> wordNodes = getNode(word);
         if (wordNodes == null) {
             return null;
