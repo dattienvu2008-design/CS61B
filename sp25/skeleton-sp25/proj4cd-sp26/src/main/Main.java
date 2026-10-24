@@ -31,11 +31,11 @@ public class Main {
     }
     public static void main(String[] args) {
         NgordnetServer hns = new NgordnetServer();
+        DirectedGraph graph = new DirectedGraph(DirectedGraph.sSize82191, DirectedGraph.hSize82191, DirectedGraph.wordHistory14377);
 
         hns.startUp();
         // TODO: modify HyponymsHandler
-        // hns.register("hyponyms", new HyponymsHandler());
-
+        hns.register("hyponyms", new HyponymsHandler(graph));
         System.out.println("Finished server startup! Visit http://localhost:4567/ngordnet.html");
     }
 }

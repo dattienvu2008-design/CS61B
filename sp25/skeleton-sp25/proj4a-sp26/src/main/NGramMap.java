@@ -118,7 +118,7 @@ public class NGramMap {
     public TimeSeries weightHistory(String word, int startYear, int endYear) {
 
         TimeSeries boundedWordHistory = wordHistory.get(word);
-        for (Integer year : boundedWordHistory.years()) {
+        for (Integer year : wordHistory.get(word).years()) {
             if (year < startYear || year > endYear) {
                 boundedWordHistory.remove(year);
             }

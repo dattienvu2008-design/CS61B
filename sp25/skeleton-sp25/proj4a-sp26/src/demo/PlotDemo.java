@@ -7,6 +7,7 @@ import org.knowm.xchart.XYChart;
 
 import static main.Main.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlotDemo {
     public static final int YEAR_1900 = 1900;
@@ -26,10 +27,25 @@ public class PlotDemo {
 
         XYChart chart = Plotter.generateTimeSeriesChart(words, lts);
         String s = Plotter.encodeChartAsString(chart);
-        System.out.println(s);
 
         // you can also do this to display locally:
         // Plotter.displayChart(chart);
 
+//        List<String> wordsLst = new ArrayList<>(List.of("dog", "cat"));
+//        int startYear = 1900, endYear = 1950;
+//        List<TimeSeries> lts2 = new ArrayList<>();
+//        TimeSeries currentTs;
+//        for (int i = 0; i < wordsLst.toArray().length; i++) {
+//            currentTs = ngm.weightHistory(wordsLst.get(i), startYear, endYear);
+//            if (currentTs == null) {
+//                wordsLst.remove(i);
+//                continue;
+//            }
+//            lts2.add(currentTs);
+//        }
+//        XYChart chart2 = Plotter.generateTimeSeriesChart(wordsLst, lts2);
+//        String encoded = Plotter.encodeChartAsString(chart2);
+//        System.out.println(encoded);
+//        Plotter.displayChart(chart2);
     }
 }

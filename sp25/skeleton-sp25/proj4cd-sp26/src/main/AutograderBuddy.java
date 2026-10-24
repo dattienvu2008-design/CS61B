@@ -8,7 +8,7 @@ public class AutograderBuddy {
     public static NgordnetQueryHandler getHyponymsHandler(
             String wordHistoryFile, String yearHistoryFile,
             String synsetFile, String hyponymFile) {
-
-        throw new RuntimeException("Please fill out AutograderBuddy.java!");
+        DirectedGraph graph = new DirectedGraph(synsetFile, hyponymFile, wordHistoryFile);
+        return new HyponymsHandler(graph);
     }
 }
