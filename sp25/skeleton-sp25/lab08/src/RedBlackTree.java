@@ -35,6 +35,10 @@ public class RedBlackTree<T extends Comparable<T>> {
             this.left = left;
             this.right = right;
         }
+
+        protected boolean isRed() {
+            return !isBlack;
+        }
     }
 
     /**
@@ -51,6 +55,9 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     void flipColors(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
+        node.isBlack = !node.isBlack;
+        node.left.isBlack = !node.left.isBlack;
+        node.right.isBlack = !node.right.isBlack;
     }
 
     /**
@@ -62,7 +69,10 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> newRoot = node.left;
+        newRoot.right = node;
+        node.left = null;
+        return newRoot;
     }
 
     /**
@@ -74,7 +84,10 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
         // TODO: YOUR CODE HERE
-        return null;
+        RBTreeNode<T> newRoot = node.right;
+        node.right = newRoot.left;
+        newRoot.left = node;
+        return newRoot;
     }
 
     /**
@@ -95,7 +108,7 @@ public class RedBlackTree<T extends Comparable<T>> {
         root = insertHelper(root, item);
         root.isBlack = true;
     }
-
+    
     /**
      * Helper method to insert the item into this Red Black Tree. Comments have been provided to help break
      * down the problem. For each case, consider the scenario needed to perform those operations.
@@ -105,17 +118,50 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return
      */
     private RBTreeNode<T> insertHelper(RBTreeNode<T> node, T item) {
-        // TODO: Insert (return) new red leaf node.
-
-        // TODO: Handle normal binary search tree insertion.
-
-        // TODO: Rotate left operation
-
-        // TODO: Rotate right operation
-
-        // TODO: Color flip
-
-        return null; //fix this return statement
+        if (item.compareTo(node.item) > 0) {
+            if (node.right != null) {
+                RBTreeNode<T> deepRight = insertHelper(node.right, item);
+                if (node.right.isRed()) {
+                    if (node.left == null || node.left.isBlack) {
+                        rotateLeft(node);
+                    } else {
+                        flipColors(node);
+                    }
+                }
+            } else {
+                RBTreeNode<T> leaf = node.right = new RBTreeNode<>(false, item);
+                return rightAddFixedTree(node);
+            }
+        } else if (item.compareTo(node.item) < 0) {
+            if (node.left != null) {
+                RBTreeNode<T> deepLeft = insertHelper(node.left, item);
+            } else {
+                node.left = new RBTreeNode<>(false, item);
+                return node.left;
+            }
+        } else {
+            return null;
+        }
+        return null;
     }
 
+    private RBTreeNode<T> rightAddFixedTree(RBTreeNode<T> node) {
+        if (node.right.isRed()) {
+            if (node.left == null || node.left.isBlack) {
+                rotateLeft(node);
+                return node;
+            } else {
+                flipColors(node);
+                return node.right;
+            }
+        }
+//        if (node.left != null && node.left.isRed()) {
+//            flipColors(node);
+//            return node.right;
+//        } else {
+//            rotateLeft(node);
+//            return node;
+//        }
+        return null;
+    }
 }

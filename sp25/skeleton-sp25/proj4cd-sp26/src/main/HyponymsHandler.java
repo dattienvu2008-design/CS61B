@@ -46,45 +46,5 @@ public class HyponymsHandler extends NgordnetQueryHandler {
                 return intersect.stream().sorted(compareByOccurs).skip(intersect.size() - q.k()).toList().toString();
             }
         }
-//        else {
-//            // For Debug and Visualization only
-//            System.out.println("Currently running k = " + q.k());
-//
-//            HashSet<String> mostOccursWord = new HashSet<>();
-//            TreeMap<Integer, HashSet<String>>[] wordTrees = new TreeMap[words.size()];
-//            HashSet<String> intersect = graph.getHyponyms(words.getFirst());
-//            for (int i = 0; i < words.size(); i++) {
-//                intersect.retainAll(graph.getHyponyms(words.get(i)));
-//                wordTrees[i] = graph.getWeightedHyponyms(words.get(i), q.startYear(), q.endYear());
-//            }
-//            int[] cacheWords = new int[words.size()];
-//            int cacheWord = -1, cacheTreeIndex = -1;
-//            try {
-//                while (mostOccursWord.size() < q.k()) {
-//                    cacheWord = -1;
-//                    for (int i = 0; i < wordTrees.length; i++) {
-//                        cacheWords[i] = wordTrees[i].lastKey();
-//                    }
-//                    for (int i = 0; i < cacheWords.length; i++) {
-//                        if (cacheWords[i] > cacheWord) {
-//                            cacheWord = cacheWords[i];
-//                            cacheTreeIndex = i;
-//                        }
-//                    }
-//                    mostOccursWord.addAll(wordTrees[cacheTreeIndex].get(cacheWord));
-//                    if (mostOccursWord.size() < q.k()) {
-//                        wordTrees[cacheTreeIndex].remove(cacheWord);
-//                    }
-//                }
-//            } catch (NoSuchElementException e) {
-//                return mostOccursWord.toString();
-//            }
-//            Iterator<String> iter = wordTrees[cacheTreeIndex].get(cacheWord).iterator();
-//            while (mostOccursWord.size() > q.k()) {
-//                mostOccursWord.remove(iter.next());
-//            }
-//            System.out.println(mostOccursWord.toString());
-//            return mostOccursWord.toString();
-//        }
     }
 }
