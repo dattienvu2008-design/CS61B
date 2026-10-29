@@ -42,6 +42,7 @@ public class GameLoopDemo {
                 world[x][y] = Tileset.FLOOR;
             }
         }
+        System.out.println((117*80)/100);
 
         char c; // Variable for saving the most recent character typed by the user.
 

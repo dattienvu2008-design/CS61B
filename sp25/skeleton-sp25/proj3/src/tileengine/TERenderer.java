@@ -1,5 +1,6 @@
 package tileengine;
 
+import core.Tile;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.Color;
@@ -88,6 +89,12 @@ public class TERenderer {
         StdDraw.show();
     }
 
+    public void renderFrame(Tile[][] world) {
+        StdDraw.clear(new Color(0, 0, 0));
+        drawTiles(world);
+        StdDraw.show();
+    }
+
     /**
      * Draws all world tiles without clearing the canvas or showing the tiles.
      * @param world the 2D TETile[][] array to render
@@ -102,6 +109,20 @@ public class TERenderer {
                             + " is null.");
                 }
                 world[x][y].draw(x + xOffset, y + yOffset);
+            }
+        }
+    }
+
+    public void drawTiles(Tile[][] world) {
+        int numXTiles = world.length;
+        int numYTiles = world[0].length;
+        for (int x = 0; x < numXTiles; x += 1) {
+            for (int y = 0; y < numYTiles; y += 1) {
+                if (world[x][y] == null) {
+                    throw new IllegalArgumentException("Tile at position x=" + x + ", y=" + y
+                            + " is null.");
+                }
+                world[x][y].getTileType().draw(x + xOffset, y + yOffset);
             }
         }
     }

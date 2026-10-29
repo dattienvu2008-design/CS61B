@@ -160,6 +160,8 @@ public class TETile {
 
         // make sure value doesn't fall outside of the range 0 to 255.
         int newValue = Math.min(255, Math.max(0, rawNewValue));
+        // Personal comment: Not "fair" enough in choosing random nums, since the chance of getting outside [0,255]
+        // is much larger than getting inside
         return newValue;
     }
 

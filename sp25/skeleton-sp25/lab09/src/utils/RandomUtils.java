@@ -11,7 +11,7 @@ import java.util.Random;
  * <p>
  * Adapted from https://introcs.cs.princeton.edu/java/22library/StdRandom.java.html
  */
-public class RandomUtils {
+public class    RandomUtils {
 
     /**
      * Returns a random real number uniformly in [0, 1).
