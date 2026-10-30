@@ -1,0 +1,3 @@
+List feature may implement in the future:
+1. Refactor map: Create getter/setter instead of accessing raw data
+2. Improve "isOverlapped": Include a function that check for wall collision/wall-next-to-wall between 2 room (may create new function if needed)

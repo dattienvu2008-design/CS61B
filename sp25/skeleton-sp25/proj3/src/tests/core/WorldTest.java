@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WorldTest {
     @Test
-    public void validPosTest() {
-        assertThat(3).isEqualTo(3);
+    public void Test() {
     }
 }

@@ -1,6 +1,6 @@
 package tileengine;
 
-import core.Tile;
+import worldassets.InteractiveTile;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.awt.Color;
@@ -89,7 +89,7 @@ public class TERenderer {
         StdDraw.show();
     }
 
-    public void renderFrame(Tile[][] world) {
+    public void renderFrame(InteractiveTile[][] world) {
         StdDraw.clear(new Color(0, 0, 0));
         drawTiles(world);
         StdDraw.show();
@@ -113,7 +113,7 @@ public class TERenderer {
         }
     }
 
-    public void drawTiles(Tile[][] world) {
+    public void drawTiles(InteractiveTile[][] world) {
         int numXTiles = world.length;
         int numYTiles = world[0].length;
         for (int x = 0; x < numXTiles; x += 1) {

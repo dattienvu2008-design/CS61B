@@ -1,5 +1,7 @@
 package tileengine;
 
+import worldassets.InteractiveTile;
+
 import java.awt.Color;
 
 /**
