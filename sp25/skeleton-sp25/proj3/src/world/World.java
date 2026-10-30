@@ -2,6 +2,7 @@ package world;
 
 import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
+import tileengine.TETile;
 import tileengine.Tileset;
 import utils.RandomUtils;
 import worldassets.*;
@@ -18,7 +19,7 @@ public class World {
     /**
      * World map.
      */
-    public final Map map;
+    public final WorldMap map;
     private /*final*/ HashMap<AreaType, Area[]> areas;
     private final int width, height, avgRoomWidth, avgRoomHeight;
     private final Random rand;
@@ -46,7 +47,7 @@ public class World {
 //        ter.initialize(width, height);
 
         rand = new Random(seed);
-        map = new Map(width, height);
+        map = new WorldMap(width, height);
         this.width = width;
         this.height = height;
         this.avgRoomWidth = avgRoomWidth;
@@ -96,10 +97,9 @@ public class World {
     // Private Helper Method:
     private void generateRandomMap(int numRooms) {
         //Generating map with respect to params
-        InteractiveTile tile = new InteractiveTile(Tileset.NOTHING);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                map.setTile(x, y, tile);
+                map.setTile(x, y, Tileset.NOTHING);
             }
         }
         Position pos;
@@ -206,9 +206,9 @@ public class World {
                 }
                 // Create room here?
                 if (x == xPos || y == yPos || x == xPos + roomWidth - 1 || y == yPos - roomHeight + 1) {
-                    map.setTile(x, y, new InteractiveTile(Tileset.WALL));
+                    map.setTile(x, y, Tileset.WALL);
                 } else {
-                    map.setTile(x, y, new InteractiveTile(Tileset.WALL));
+                    map.setTile(x, y, Tileset.FLOOR);
                 }
             }
         }

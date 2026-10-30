@@ -1,5 +1,6 @@
 package tileengine;
 
+import world.WorldMap;
 import worldassets.InteractiveTile;
 import edu.princeton.cs.algs4.StdDraw;
 
@@ -83,13 +84,7 @@ public class TERenderer {
      * the screen in tiles.
      * @param world the 2D TETile[][] array to render
      */
-    public void renderFrame(TETile[][] world) {
-        StdDraw.clear(new Color(0, 0, 0));
-        drawTiles(world);
-        StdDraw.show();
-    }
-
-    public void renderFrame(InteractiveTile[][] world) {
+    public void renderFrame(WorldMap world) {
         StdDraw.clear(new Color(0, 0, 0));
         drawTiles(world);
         StdDraw.show();
@@ -99,30 +94,16 @@ public class TERenderer {
      * Draws all world tiles without clearing the canvas or showing the tiles.
      * @param world the 2D TETile[][] array to render
      */
-    public void drawTiles(TETile[][] world) {
-        int numXTiles = world.length;
-        int numYTiles = world[0].length;
+    public void drawTiles(WorldMap world) {
+        int numXTiles = world.getWidth();
+        int numYTiles = world.getHeight();
         for (int x = 0; x < numXTiles; x += 1) {
             for (int y = 0; y < numYTiles; y += 1) {
-                if (world[x][y] == null) {
+                if (world.getTile(x, y) == null) {
                     throw new IllegalArgumentException("Tile at position x=" + x + ", y=" + y
                             + " is null.");
                 }
-                world[x][y].draw(x + xOffset, y + yOffset);
-            }
-        }
-    }
-
-    public void drawTiles(InteractiveTile[][] world) {
-        int numXTiles = world.length;
-        int numYTiles = world[0].length;
-        for (int x = 0; x < numXTiles; x += 1) {
-            for (int y = 0; y < numYTiles; y += 1) {
-                if (world[x][y] == null) {
-                    throw new IllegalArgumentException("Tile at position x=" + x + ", y=" + y
-                            + " is null.");
-                }
-                world[x][y].getTileType().draw(x + xOffset, y + yOffset);
+                world.getTile(x,y).draw(x + xOffset, y + yOffset);
             }
         }
     }
@@ -136,3 +117,34 @@ public class TERenderer {
         StdDraw.setFont(font);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Trash code:  (Just put here for further use - if needed)
+//    public void drawTiles(InteractiveTile[][] world) {
+//        int numXTiles = world.length;
+//        int numYTiles = world[0].length;
+//        for (int x = 0; x < numXTiles; x += 1) {
+//            for (int y = 0; y < numYTiles; y += 1) {
+//                if (world[x][y] == null) {
+//                    throw new IllegalArgumentException("Tile at position x=" + x + ", y=" + y
+//                            + " is null.");
+//                }
+//                world[x][y].getTileType().draw(x + xOffset, y + yOffset);
+//            }
+//        }
+//    }
