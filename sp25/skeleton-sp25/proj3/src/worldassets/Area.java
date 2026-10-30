@@ -3,6 +3,8 @@ package worldassets;
 import world.World;
 
 public class Area {
+    // May add HALLWAY and HALLWAY_INTERSECTION in the future
+    private static final Area VOID = null;
     private final int width, height;
     private final Position position;
     private final Position center;
@@ -76,6 +78,24 @@ public class Area {
         double areaRightSide = area.getPosition().getX() + area.width - 1;
         double areaTopSide = area.getPosition().getY();
         double areaBottomSide = area.getPosition().getY() - area.height + 1;
+
+        return !(thisLeftSide > areaRightSide || thisRightSide < areaLeftSide
+                || thisTopSide < areaBottomSide || thisBottomSide > areaTopSide);
+    }
+
+    public boolean isAdjacentOrOverlap(Area area) {
+        // Cite: Use LLM to create a slightly-different-copy of isOverlapped
+        int buffer = 1;
+
+        double thisLeftSide = this.getPosition().getX() - buffer;
+        double thisRightSide = this.getPosition().getX() + width - 1 + buffer;
+        double thisTopSide = this.getPosition().getY() + buffer;
+        double thisBottomSide = this.getPosition().getY() - height + 1 - buffer;
+
+        double areaLeftSide = area.getPosition().getX() - buffer;
+        double areaRightSide = area.getPosition().getX() + area.width - 1 + buffer;
+        double areaTopSide = area.getPosition().getY() + buffer;
+        double areaBottomSide = area.getPosition().getY() - area.height + 1 - buffer;
 
         return !(thisLeftSide > areaRightSide || thisRightSide < areaLeftSide
                 || thisTopSide < areaBottomSide || thisBottomSide > areaTopSide);

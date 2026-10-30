@@ -21,13 +21,14 @@ import utils.RandomUtils;
  * to make your TETile class mutable, if you prefer.
  */
 
-public class TETile {
+public class TETileRenderer {
     private final char character; // Do not rename character or the autograder will break.
     private final Color textColor;
     private final Color backgroundColor;
     private final String description;
     private final String filepath;
     private final int id;
+//    private RectengularArea area;
 
     /**
      * Full constructor for TETile objects.
@@ -37,8 +38,8 @@ public class TETile {
      * @param description The description of the tile, shown in the GUI on hovering over the tile.
      * @param filepath Full path to image to be used for this tile. Must be correct size (16x16)
      */
-    public TETile(char character, Color textColor, Color backgroundColor, String description,
-                  String filepath, int id) {
+    public TETileRenderer(char character, Color textColor, Color backgroundColor, String description,
+                          String filepath, int id) {
         this.character = character;
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
@@ -55,7 +56,7 @@ public class TETile {
      * @param backgroundColor The color drawn behind the character.
      * @param description The description of the tile, shown in the GUI on hovering over the tile.
      */
-    public TETile(char character, Color textColor, Color backgroundColor, String description, int id) {
+    public TETileRenderer(char character, Color textColor, Color backgroundColor, String description, int id) {
         this.character = character;
         this.textColor = textColor;
         this.backgroundColor = backgroundColor;
@@ -69,7 +70,7 @@ public class TETile {
      * @param t tile to copy
      * @param textColor foreground color for tile copy
      */
-    public TETile(TETile t, Color textColor) {
+    public TETileRenderer(TETileRenderer t, Color textColor) {
         this(t.character, textColor, t.backgroundColor, t.description, t.filepath, t.id);
     }
 
@@ -78,7 +79,7 @@ public class TETile {
      * @param t tile to copy
      * @param c character for tile copy
      */
-    public TETile(TETile t, char c) {
+    public TETileRenderer(TETileRenderer t, char c) {
         this(c, t.textColor, t.backgroundColor, t.description, t.filepath, t.id);
     }
 
@@ -144,7 +145,7 @@ public class TETile {
      * @param db the maximum difference in blue value
      * @param r the random number generator to use
      */
-    public static TETile colorVariant(TETile t, int dr, int dg, int db, Random r) {
+    public static TETileRenderer colorVariant(TETileRenderer t, int dr, int dg, int db, Random r) {
         Color oldColor = t.textColor;
         int newRed = newColorValue(oldColor.getRed(), dr, r);
         int newGreen = newColorValue(oldColor.getGreen(), dg, r);
@@ -152,7 +153,7 @@ public class TETile {
 
         Color c = new Color(newRed, newGreen, newBlue);
 
-        return new TETile(t, c);
+        return new TETileRenderer(t, c);
     }
 
     private static int newColorValue(int v, int dv, Random r) {
@@ -172,7 +173,7 @@ public class TETile {
      * @param world the 2D world to print
      * @return string representation of the world
      */
-    public static String toString(TETile[][] world) {
+    public static String toString(TETileRenderer[][] world) {
         int width = world.length;
         int height = world[0].length;
         StringBuilder sb = new StringBuilder();
@@ -194,15 +195,15 @@ public class TETile {
      * Makes a copy of the given 2D tile array.
      * @param tiles the 2D array to copy
      **/
-    public static TETile[][] copyOf(TETile[][] tiles) {
+    public static TETileRenderer[][] copyOf(TETileRenderer[][] tiles) {
         if (tiles == null) {
             return null;
         }
 
-        TETile[][] copy = new TETile[tiles.length][];
+        TETileRenderer[][] copy = new TETileRenderer[tiles.length][];
 
         int i = 0;
-        for (TETile[] column : tiles) {
+        for (TETileRenderer[] column : tiles) {
             copy[i] = Arrays.copyOf(column, column.length);
             i += 1;
         }
@@ -220,6 +221,6 @@ public class TETile {
         if (o == this) {
             return true;
         }
-        return (o instanceof TETile otherTile && otherTile.id == this.id);
+        return (o instanceof TETileRenderer otherTile && otherTile.id == this.id);
     }
 }

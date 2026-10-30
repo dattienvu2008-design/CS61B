@@ -103,7 +103,7 @@ public class TERenderer {
                     throw new IllegalArgumentException("Tile at position x=" + x + ", y=" + y
                             + " is null.");
                 }
-                world.getTile(x,y).draw(x + xOffset, y + yOffset);
+                world.getTile(x,y).getTileType().draw(x + xOffset, y + yOffset);
             }
         }
     }

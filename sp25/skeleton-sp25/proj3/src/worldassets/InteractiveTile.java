@@ -1,30 +1,16 @@
 package worldassets;
 
-import tileengine.TETile;
+import tileengine.TETileRenderer;
 
 import java.awt.*;
 
-public class InteractiveTile extends TETile {
+public class InteractiveTile extends Tile {
     // Implement later!!!
-    public InteractiveTile(char character, Color textColor, Color backgroundColor, String description, String filepath, int id) {
-        super(character, textColor, backgroundColor, description, filepath, id);
-    }
-
-    public InteractiveTile(char character, Color textColor, Color backgroundColor, String description, int id) {
-        super(character, textColor, backgroundColor, description, id);
-    }
-
-    public InteractiveTile(TETile t, Color textColor) {
-        super(t, textColor);
-    }
-
-    public InteractiveTile(TETile t, char c) {
-        super(t, c);
-    }
     // May add something like tile status (trapped, poisonous, breakable, ...), some method to change tile status/terrain/something else
     // Not overengineering, just an insurrance for future ambition features:>
+    private TETileRenderer tileType;
 
-//    public InteractiveTile(TETile tileType) {
-//        this.tileType = tileType;
-//    }
+    public InteractiveTile(TETileRenderer tileType) {
+        super(tileType);
+    }
 }

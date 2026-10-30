@@ -1,6 +1,7 @@
 package worldassets;
 
 import world.World;
+import world.WorldMap;
 
 public class Position {
     private double xPos, yPos;
@@ -43,6 +44,9 @@ public class Position {
     }
 
     public static boolean validPos(Position pos, World world) {
+        return pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < world.getWidth() && pos.getY() < world.getHeight();
+    }
+    public static boolean validPos(Position pos, WorldMap world) {
         return pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < world.getWidth() && pos.getY() < world.getHeight();
     }
     public static boolean validPos(Position pos, int worldWidth, int worldHeight) {
