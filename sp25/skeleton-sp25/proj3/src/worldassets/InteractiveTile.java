@@ -1,6 +1,7 @@
 package worldassets;
 
 import tileengine.TETileRenderer;
+import world.WorldMap;
 
 import java.awt.*;
 
@@ -10,7 +11,7 @@ public class InteractiveTile extends Tile {
     // Not overengineering, just an insurrance for future ambition features:>
     private TETileRenderer tileType;
 
-    public InteractiveTile(TETileRenderer tileType) {
-        super(tileType);
+    public InteractiveTile(TETileRenderer tileType, Area area, Position pos, WorldMap map) {
+        super(tileType, area, pos, map);
     }
 }

@@ -28,6 +28,7 @@ public class TETileRenderer {
     private final String description;
     private final String filepath;
     private final int id;
+    public final boolean blockable;
 //    private RectengularArea area;
 
     /**
@@ -39,6 +40,17 @@ public class TETileRenderer {
      * @param filepath Full path to image to be used for this tile. Must be correct size (16x16)
      */
     public TETileRenderer(char character, Color textColor, Color backgroundColor, String description,
+                          String filepath, int id, boolean blockable) {
+        this.character = character;
+        this.textColor = textColor;
+        this.backgroundColor = backgroundColor;
+        this.description = description;
+        this.filepath = filepath;
+        this.id = id;
+        this.blockable = blockable;
+    }
+
+    public TETileRenderer(char character, Color textColor, Color backgroundColor, String description,
                           String filepath, int id) {
         this.character = character;
         this.textColor = textColor;
@@ -46,6 +58,7 @@ public class TETileRenderer {
         this.description = description;
         this.filepath = filepath;
         this.id = id;
+        this.blockable = false;
     }
 
     /**
@@ -56,6 +69,16 @@ public class TETileRenderer {
      * @param backgroundColor The color drawn behind the character.
      * @param description The description of the tile, shown in the GUI on hovering over the tile.
      */
+    public TETileRenderer(char character, Color textColor, Color backgroundColor, String description, int id, boolean blockable) {
+        this.character = character;
+        this.textColor = textColor;
+        this.backgroundColor = backgroundColor;
+        this.description = description;
+        this.filepath = null;
+        this.id = id;
+        this.blockable = blockable;
+    }
+
     public TETileRenderer(char character, Color textColor, Color backgroundColor, String description, int id) {
         this.character = character;
         this.textColor = textColor;
@@ -63,6 +86,7 @@ public class TETileRenderer {
         this.description = description;
         this.filepath = null;
         this.id = id;
+        this.blockable = false;
     }
 
     /**
@@ -71,7 +95,7 @@ public class TETileRenderer {
      * @param textColor foreground color for tile copy
      */
     public TETileRenderer(TETileRenderer t, Color textColor) {
-        this(t.character, textColor, t.backgroundColor, t.description, t.filepath, t.id);
+        this(t.character, textColor, t.backgroundColor, t.description, t.filepath, t.id, t.blockable);
     }
 
     /**
@@ -80,7 +104,7 @@ public class TETileRenderer {
      * @param c character for tile copy
      */
     public TETileRenderer(TETileRenderer t, char c) {
-        this(c, t.textColor, t.backgroundColor, t.description, t.filepath, t.id);
+        this(c, t.textColor, t.backgroundColor, t.description, t.filepath, t.id, t.blockable);
     }
 
 

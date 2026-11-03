@@ -16,12 +16,9 @@ import java.util.Random;
 public class World {
     // Attributes:
     public final WorldMap map;
-    private /*final*/ HashMap<AreaType, Area[]> areas;
+    // private /*final*/ HashMap<AreaType, Area[]> areas;
     private final int width, height, avgRoomWidth, avgRoomHeight;
     private final Random rand;
-    private int currentRoomIndex;
-    private final ArrayList<Room> rooms;
-
     // For Debugging only!!!
     // private TERenderer ter;
 
@@ -30,10 +27,11 @@ public class World {
         final int AVG_ROOM_WIDTH = 16, AVG_ROOM_HEIGHT = 13;
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
-        for (int i = 0; i < 100; i++) {
-            World world1 = new World(6, WIDTH, HEIGHT, AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, i);
+        World world1;
+        for (int i = 234; i < 23407; i = i + 2) {
+            world1 = new World(6, WIDTH, HEIGHT, AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, i);
             ter.renderFrame(world1.map);
-            StdDraw.pause(800);
+            StdDraw.pause(2000);
         }
     }
 
@@ -48,8 +46,6 @@ public class World {
         this.height = height;
         this.avgRoomWidth = avgRoomWidth;
         this.avgRoomHeight = avgRoomHeight;
-        rooms = new ArrayList<>();
-        currentRoomIndex = 0;
         generateRandomMap(numRooms);
     }
 
@@ -73,30 +69,39 @@ public class World {
         //Generating map with respect to params
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                map.setTile(x, y, new Tile(Tileset.NOTHING));
+                map.setTile(x, y, new Tile(Tileset.NOTHING, Area.VOID, new Position(x, y), map));
             }
         }
         Position pos;
         int randWidth, randHeight;
         int lowerBound = Math.min(avgRoomHeight, avgRoomWidth), upperBound = Math.max(avgRoomHeight, avgRoomWidth);
+        int numTry = 0;
 
         createRoomLoop:
         for (int i = 0; i < numRooms; i++) {
+            if (numTry > 1000) {
+                break createRoomLoop;
+            }
             pos = (i == 0)? getRandomPos(rand) : getRandomRoomCenterByDistance(rand);
-            randWidth = (int) RandomUtils.gaussian(rand, avgRoomWidth, 1.5);
-            randHeight = (int) RandomUtils.gaussian(rand, avgRoomHeight, 1.5);
+            randWidth = (int) RandomUtils.gaussian(rand, avgRoomWidth, 1.7);
+            randHeight = (int) RandomUtils.gaussian(rand, avgRoomHeight, 1.7);
             pos = Area.centerToTopLeftPos(pos, randWidth, randHeight, this);
 
-            for (int room = 0; room < map.getNumRooms(); room++) {
-                if (map.getRoom(room).isAdjacentOrOverlap(new Room(pos, randWidth, randHeight))) {
+            for (int roomIndex = 0; roomIndex < map.getNumRooms(); roomIndex++) {
+                if (map.getRoom(roomIndex).isAdjacentOrOverlap(new Room(pos, randWidth, randHeight, map))) {
                     i--;
+                    numTry++;
                     continue createRoomLoop;
                 }
             }
-
             map.createRoom(pos, randWidth, randHeight);
+            numTry = 0;
+        }
 
-//            ter.renderFrame(this.map); //JUST FOR DEBUGGING!!!
+        if (numRooms > 1) {
+            for (Integer[] roomsLst : map.findMST()) {
+                map.createHallway(map.getRoom(roomsLst[0]), map.getRoom(roomsLst[1]));
+            }
         }
     }
 

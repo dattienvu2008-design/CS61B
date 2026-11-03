@@ -1,9 +1,8 @@
 package world;
 
 import datastructure.WeightedQuickUnion;
-import edu.princeton.cs.algs4.In;
-import tileengine.TETileRenderer;
 import tileengine.Tileset;
+import worldassets.Area;
 import worldassets.Position;
 import worldassets.Room;
 import worldassets.Tile;
@@ -53,7 +52,7 @@ public class WorldMap {
      * @return Tile at (x,y)
      */
     public Tile getTile(Position pos) {
-        if (Position.validPos(pos, width, height)) {
+        if (!Position.validPos(pos, width, height)) {
             throw new IndexOutOfBoundsException();
         } else if (!pos.isPosInteger()) {
             throw new IllegalArgumentException();
@@ -132,6 +131,68 @@ public class WorldMap {
         return xPos >= 0 && yPos >= 0 && xPos < width && yPos < height;
     } // Worked!
 
+    public void createHallway(Room roomA, Room roomB) {
+        Position centerA = roomA.getCenter();
+        Position centerB = roomB.getCenter();
+        int currentX = (int) centerA.getX();
+        int currentY = (int) centerA.getY();
+        Tile currentTile;
+        if (currentY < centerB.getY()) {
+            while (currentY <= centerB.getY()) {
+                currentTile = getTile(currentX, currentY);
+                if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
+                    currentTile.setTileType(Tileset.FLOOR);
+                    createHallwayAddWallHelper(currentTile);
+                }
+                currentY++;
+            }
+        } else {
+            while (currentY >= centerB.getY()) {
+                currentTile = getTile(currentX, currentY);
+                if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
+                    currentTile.setTileType(Tileset.FLOOR);
+                    createHallwayAddWallHelper(currentTile);
+                }
+                currentY--;
+            }
+        }
+        if (currentX < centerB.getX()) {
+            while (currentX <= centerB.getX()) {
+                currentTile = getTile(currentX, currentY);
+                if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
+                    currentTile.setTileType(Tileset.FLOOR);
+                    createHallwayAddWallHelper(currentTile);
+                }
+                currentX++;
+            }
+        } else {
+            while (currentX >= centerB.getX()) {
+                currentTile = getTile(currentX, currentY);
+                if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
+                    currentTile.setTileType(Tileset.FLOOR);
+                    createHallwayAddWallHelper(currentTile);
+                }
+                currentX--;
+            }
+        }
+    }
+
+    private void createHallwayAddWallHelper(Tile tile) {
+        Tile[] adjacentTile = new Tile[8];
+        adjacentTile[0] = tile.getBottomTile();
+        adjacentTile[1] = tile.getTopTile();
+        adjacentTile[2] = tile.getLeftTile();
+        adjacentTile[3] = tile.getRightTile();
+        adjacentTile[4] = tile.getTopLeftTile();
+        adjacentTile[5] = tile.getTopRightTile();
+        adjacentTile[6] = tile.getBottomLeftTile();
+        adjacentTile[7] = tile.getBottomRightTile();
+        for (Tile currentTile : adjacentTile) {
+            if (currentTile != null && currentTile.getTileType() == Tileset.NOTHING) {
+                currentTile.setTileType(Tileset.WALL);
+            }
+        }
+    }
     // Public Interface:
     /*
      * Create room of size roomWidth*roomHeight. (xPos;yPos) is the room's top left corner
@@ -144,7 +205,8 @@ public class WorldMap {
             roomHeight = validSize[1];
         }
 
-        addRoom(new Room(pos, roomWidth, roomHeight)); //Need to modify!!
+        Room room = new Room(pos, roomWidth, roomHeight, this);
+        addRoom(room); //Need to modify!!
 
         for (int x = xPos; x < xPos + roomWidth; x++) {
             if (!Position.validPos(pos, this)) {
@@ -156,9 +218,9 @@ public class WorldMap {
                 }
                 // Create room here?
                 if (x == xPos || y == yPos || x == xPos + roomWidth - 1 || y == yPos - roomHeight + 1) {
-                    setTile(x, y, new Tile(Tileset.WALL));
+                    setTile(x, y, new Tile(Tileset.WALL, room, new Position(x, y), this));
                 } else {
-                    setTile(x, y, new Tile(Tileset.FLOOR));
+                    setTile(x, y, new Tile(Tileset.FLOOR, room, new Position(x, y), this));
                 }
             }
         }
@@ -166,13 +228,14 @@ public class WorldMap {
     }
 
     public ArrayList<Integer[]> findMST() {
+        // Need more optimization! (For now just a runable method - still messy)
         int numRooms = getNumRooms(), index = 0;
         int currentDist;
 //        int numDists = (numRooms*(numRooms - 1)) / 2;
         ArrayList<Integer[]> dists = new ArrayList<>();
         for (int i = 0; i < numRooms - 1; i++) {
             for (int j = i + 1; j < numRooms; j++) {
-                currentDist = getRoom(i).distantTo(getRoom(j));
+                currentDist = getRoom(i).distantFromCenterTo(getRoom(j));
                 dists.add(new Integer[]{i, j, currentDist});
             }
         }

@@ -1,10 +1,11 @@
 package worldassets;
 
 import world.World;
+import world.WorldMap;
 
 public class Area {
     // May add HALLWAY and HALLWAY_INTERSECTION in the future
-    private static final Area VOID = null;
+    public static final Area VOID = null;
     private final int width, height;
     private final Position position;
     private final Position center;
@@ -15,13 +16,13 @@ public class Area {
      * @param width width of this area
      * @param height height/length of this area
     * */
-    public Area(Position pos, int width, int height) {
+    public Area(Position pos, int width, int height, WorldMap map) {
         position = pos;
         this.width = width;
         this.height = height;
         int centerX = (int) (pos.getX() + (pos.getX() + width)) / 2;
-        int centerY = (int) (pos.getY() + (pos.getY() + height)) / 2;
-        center = new Position(centerX, centerY);
+        int centerY = (int) (pos.getY() + (pos.getY() - height)) / 2;
+        center = map.getTile(centerX, centerY).getPos();
     }
 
     public Position getPosition() {
@@ -44,11 +45,19 @@ public class Area {
         return new Position(getPosition().getX() + width - 1, getPosition().getY() - height + 1);
     }
 
-    public int distantTo(Area a) {
+    public int distantFromCenterTo(Area a) {
         // Calculate manhattan distant from this to a
         return (int) this.getCenter().distantTo(a.getCenter());
     }
 
+    /**
+     * Convert center position of area to Top Left corner Position
+     * @param center Position object, center of the room
+     * @param w Room's width
+     * @param h Room's height
+     * @param world the world
+     * @return Position Object at top left corner
+     */
     public static Position centerToTopLeftPos(Position center, int w, int h, World world) {
         int newX = (int) (center.getX() - w/2);
         int newY = (int) (center.getY() + h/2);
@@ -100,6 +109,26 @@ public class Area {
         return !(thisLeftSide > areaRightSide || thisRightSide < areaLeftSide
                 || thisTopSide < areaBottomSide || thisBottomSide > areaTopSide);
     }
+
+//    public PositionFromArea[] findRelativePosition(Position pos, WorldMap world) {
+//        PositionFromArea xRelativePos, yRelativePos; // 1 is top/left, 0 is center, -1 is bottom/right
+//        if (pos.getX() > getPosition().getX() + width - 1) {
+//            xRelativePos = PositionFromArea.RIGHT;
+//        } else if (pos.getX() < getPosition().getX()) {
+//            xRelativePos = PositionFromArea.LEFT;
+//        } else {
+//            xRelativePos = PositionFromArea.CENTER;
+//        }
+//
+//        if (pos.getY() > getPosition().getY()) {
+//            yRelativePos = PositionFromArea.TOP;
+//        } else if (pos.getY() < getPosition().getY() - height + 1) {
+//            yRelativePos = PositionFromArea.BOTTOM;
+//        } else {
+//            yRelativePos = PositionFromArea.CENTER;
+//        }
+//        return new PositionFromArea[] {xRelativePos, yRelativePos};
+//    }
 }
 
 

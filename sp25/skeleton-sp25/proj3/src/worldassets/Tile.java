@@ -1,16 +1,120 @@
 package worldassets;
 
 import tileengine.TETileRenderer;
+import world.WorldMap;
 
 public class Tile {
     private TETileRenderer tileType;
-    private Area area;
-
-    public Tile(TETileRenderer tileType) {
+    public TETileRenderer getTileType() {
+        if (entity != null) {
+            return entity.getSkin();
+        }
+        return tileType;
+    }
+    public void setTileType(TETileRenderer tileType) {
         this.tileType = tileType;
     }
 
-    public TETileRenderer getTileType() {
-        return tileType;
+    private Area area = Area.VOID;
+    public Area getArea() {
+        return area;
     }
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    private final Position tilePos;
+    public Position getPos() {
+        return tilePos;
+    }
+
+    private final WorldMap map;
+
+    private Avatar entity = null;
+    public void setEntity(Avatar entity) {
+        this.entity = entity;
+    }
+    public void removeEntity() {
+        entity = null;
+    }
+
+    public Tile(TETileRenderer tileType, Area area, Position pos, WorldMap map) {
+        this.tileType = tileType;
+        this.area = area;
+        tilePos = pos;
+        this.map = map;
+    }
+
+    public Tile(TETileRenderer tileType, Position pos, WorldMap map) {
+        this.tileType = tileType;
+        this.area = area;
+        tilePos = pos;
+        this.map = map;
+    }
+
+    public Tile getLeftTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX() - 1, thisPos.getY());
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+    public Tile getRightTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX() + 1, thisPos.getY());
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+    public Tile getTopTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX(), thisPos.getY() + 1);
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+    public Tile getBottomTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX(), thisPos.getY() - 1);
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+    public Tile getBottomLeftTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX() - 1, thisPos.getY() - 1);
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+    public Tile getBottomRightTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX() + 1, thisPos.getY() - 1);
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+    public Tile getTopLeftTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX() - 1, thisPos.getY() + 1);
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+    public Tile getTopRightTile() {
+        Position thisPos = getPos();
+        Position newPos = new Position((int) thisPos.getX() + 1, thisPos.getY() + 1);
+        if (Position.validPos(newPos, map)) {
+            return map.getTile(newPos);
+        }
+        return null;
+    }
+
 }

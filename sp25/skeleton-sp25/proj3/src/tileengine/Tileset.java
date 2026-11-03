@@ -17,9 +17,9 @@ import java.awt.Color;
  */
 
 public class Tileset {
-    public static final TETileRenderer AVATAR = new TETileRenderer('@', Color.white, Color.black, "you", 0);
+    public static final TETileRenderer PLAYER = new TETileRenderer('@', Color.white, Color.black, "you", 0);
     public static final TETileRenderer WALL = new TETileRenderer('#', new Color(216, 128, 128), Color.darkGray,
-            "wall", 1);
+            "wall", 1, true);
     public static final TETileRenderer FLOOR = new TETileRenderer('·', new Color(128, 192, 128), Color.black, "floor", 2);
     public static final TETileRenderer NOTHING = new TETileRenderer(' ', Color.black, Color.black, "nothing", 3);
     public static final TETileRenderer GRASS = new TETileRenderer('"', Color.green, Color.black, "grass", 4);

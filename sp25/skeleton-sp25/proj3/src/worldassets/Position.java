@@ -4,7 +4,7 @@ import world.World;
 import world.WorldMap;
 
 public class Position {
-    private double xPos, yPos;
+    private final double xPos, yPos;
 
     public Position(double xPos, double yPos) {
         this.xPos = xPos;
