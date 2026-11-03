@@ -1,26 +1,44 @@
 package world;
 
+import Entity.Entity;
+import Entity.Player;
 import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
 import tileengine.Tileset;
 import utils.RandomUtils;
 import worldassets.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 /*
 * Use for constructing map and storing information about state of that map (Specs may change in the future)
 * */
-public class World {
+public class World implements Serializable {
     // Attributes:
     public final WorldMap map;
     // private /*final*/ HashMap<AreaType, Area[]> areas;
     private final int width, height, avgRoomWidth, avgRoomHeight;
     private final Random rand;
-    // For Debugging only!!!
-    // private TERenderer ter;
+
+    private final ArrayList<Player> players = new ArrayList<>();
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
+    public Player getPlayer(int index) {
+        return players.get(index);
+    }
+
+    private final HashSet<Entity> entities = new HashSet<>();
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+    }
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
+    }
 
     static void main(String[] args) {
         final int WIDTH = 80, HEIGHT = 45;
@@ -41,7 +59,7 @@ public class World {
 //        ter.initialize(width, height);
 
         rand = new Random(seed);
-        map = new WorldMap(width, height);
+        map = new WorldMap(width, height, rand);
         this.width = width;
         this.height = height;
         this.avgRoomWidth = avgRoomWidth;
@@ -88,7 +106,7 @@ public class World {
             pos = Area.centerToTopLeftPos(pos, randWidth, randHeight, this);
 
             for (int roomIndex = 0; roomIndex < map.getNumRooms(); roomIndex++) {
-                if (map.getRoom(roomIndex).isAdjacentOrOverlap(new Room(pos, randWidth, randHeight, map))) {
+                if (map.getRoom(roomIndex).isAdjacentOrOverlap(new Room(pos, randWidth, randHeight, map, rand))) {
                     i--;
                     numTry++;
                     continue createRoomLoop;

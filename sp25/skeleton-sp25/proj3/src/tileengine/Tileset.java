@@ -17,11 +17,12 @@ import java.awt.Color;
  */
 
 public class Tileset {
-    public static final TETileRenderer PLAYER = new TETileRenderer('@', Color.white, Color.black, "you", 0);
+    public static final TETileRenderer PLAYER = new TETileRenderer('@', Color.white, Color.black, "you", "kenney_tiny-dungeon/Tiles/tile_0098.png", 0);
     public static final TETileRenderer WALL = new TETileRenderer('#', new Color(216, 128, 128), Color.darkGray,
-            "wall", 1, true);
-    public static final TETileRenderer FLOOR = new TETileRenderer('·', new Color(128, 192, 128), Color.black, "floor", 2);
-    public static final TETileRenderer NOTHING = new TETileRenderer(' ', Color.black, Color.black, "nothing", 3);
+            "wall", "kenney_tiny-dungeon/Tiles/tile_0014.png", 1, true);
+    public static final TETileRenderer FLOOR1 = new TETileRenderer('·', new Color(128, 192, 128), Color.black, "floor", "kenney_tiny-dungeon/Tiles/tile_0048.png", 2);
+    public static final TETileRenderer FLOOR2 = new TETileRenderer('·', new Color(128, 192, 128), Color.black, "floor", "kenney_tiny-dungeon/Tiles/tile_0049.png", 2);
+    public static final TETileRenderer NOTHING = new TETileRenderer(' ', Color.black, new Color(17, 27, 71, 255), "nothing", 3);
     public static final TETileRenderer GRASS = new TETileRenderer('"', Color.green, Color.black, "grass", 4);
     public static final TETileRenderer WATER = new TETileRenderer('≈', Color.blue, Color.black, "water", 5);
     public static final TETileRenderer FLOWER = new TETileRenderer('❀', Color.magenta, Color.pink, "flower", 6);

@@ -1,12 +1,15 @@
 package worldassets;
 
+import Entity.Entity;
 import tileengine.TETileRenderer;
 import world.WorldMap;
 
-public class Tile {
+import java.io.Serializable;
+
+public class Tile implements Serializable {
     private TETileRenderer tileType;
     public TETileRenderer getTileType() {
-        if (entity != null) {
+        if (hasEntity()) {
             return entity.getSkin();
         }
         return tileType;
@@ -30,12 +33,15 @@ public class Tile {
 
     private final WorldMap map;
 
-    private Avatar entity = null;
-    public void setEntity(Avatar entity) {
+    private Entity entity = null;
+    public void setEntity(Entity entity) {
         this.entity = entity;
     }
     public void removeEntity() {
         entity = null;
+    }
+    public boolean hasEntity() {
+        return entity != null;
     }
 
     public Tile(TETileRenderer tileType, Area area, Position pos, WorldMap map) {

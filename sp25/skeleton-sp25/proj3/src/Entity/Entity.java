@@ -1,11 +1,10 @@
-package worldassets;
+package Entity;
 
 import tileengine.TETileRenderer;
-import tileengine.Tileset;
-import world.World;
-import world.WorldMap;
+import worldassets.Direction;
+import worldassets.Tile;
 
-public class Avatar {
+public class Entity {
     private double health;
     private final int ID;
     private Tile currentPos;
@@ -16,7 +15,7 @@ public class Avatar {
         return skin;
     }
 
-    public Avatar(int health, int ID, TETileRenderer skin, Tile currentPos) {
+    public Entity(int health, int ID, TETileRenderer skin, Tile currentPos) {
         this.health = health;
         this.ID = ID;
         this.skin = skin;

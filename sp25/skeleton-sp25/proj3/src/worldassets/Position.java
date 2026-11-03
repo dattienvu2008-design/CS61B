@@ -3,7 +3,9 @@ package worldassets;
 import world.World;
 import world.WorldMap;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable {
     private final double xPos, yPos;
 
     public Position(double xPos, double yPos) {

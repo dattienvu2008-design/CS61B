@@ -7,19 +7,22 @@ import worldassets.Position;
 import worldassets.Room;
 import worldassets.Tile;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class WorldMap {
+public class WorldMap implements Serializable {
     private final Tile[][] map;
     public final int width, height;
     private int currentRoomIndex;
     private final ArrayList<Room> rooms;
+    public final Random rand;
 
-    public WorldMap(int width, int height) {
+    public WorldMap(int width, int height, Random rand) {
         this.width = width;
         this.height = height;
         map = new Tile[width][height];
         rooms = new ArrayList<>();
+        this.rand = rand;
     }
 
     // Getter:
@@ -141,7 +144,7 @@ public class WorldMap {
             while (currentY <= centerB.getY()) {
                 currentTile = getTile(currentX, currentY);
                 if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
-                    currentTile.setTileType(Tileset.FLOOR);
+                    currentTile.setTileType(Tileset.FLOOR1);
                     createHallwayAddWallHelper(currentTile);
                 }
                 currentY++;
@@ -150,7 +153,7 @@ public class WorldMap {
             while (currentY >= centerB.getY()) {
                 currentTile = getTile(currentX, currentY);
                 if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
-                    currentTile.setTileType(Tileset.FLOOR);
+                    currentTile.setTileType(Tileset.FLOOR1);
                     createHallwayAddWallHelper(currentTile);
                 }
                 currentY--;
@@ -160,7 +163,7 @@ public class WorldMap {
             while (currentX <= centerB.getX()) {
                 currentTile = getTile(currentX, currentY);
                 if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
-                    currentTile.setTileType(Tileset.FLOOR);
+                    currentTile.setTileType(Tileset.FLOOR1);
                     createHallwayAddWallHelper(currentTile);
                 }
                 currentX++;
@@ -169,7 +172,7 @@ public class WorldMap {
             while (currentX >= centerB.getX()) {
                 currentTile = getTile(currentX, currentY);
                 if (currentTile.getArea() == Area.VOID || currentTile.getTileType() == Tileset.WALL) {
-                    currentTile.setTileType(Tileset.FLOOR);
+                    currentTile.setTileType(Tileset.FLOOR1);
                     createHallwayAddWallHelper(currentTile);
                 }
                 currentX--;
@@ -205,9 +208,11 @@ public class WorldMap {
             roomHeight = validSize[1];
         }
 
-        Room room = new Room(pos, roomWidth, roomHeight, this);
+        Room room = new Room(pos, roomWidth, roomHeight, this, rand);
         addRoom(room); //Need to modify!!
 
+        int randFloorTile;
+        Random randTile = new Random(0);
         for (int x = xPos; x < xPos + roomWidth; x++) {
             if (!Position.validPos(pos, this)) {
                 continue;
@@ -220,7 +225,15 @@ public class WorldMap {
                 if (x == xPos || y == yPos || x == xPos + roomWidth - 1 || y == yPos - roomHeight + 1) {
                     setTile(x, y, new Tile(Tileset.WALL, room, new Position(x, y), this));
                 } else {
-                    setTile(x, y, new Tile(Tileset.FLOOR, room, new Position(x, y), this));
+                    randFloorTile = randTile.nextInt(2);
+                    switch (randFloorTile) {
+                        case 0:
+                            setTile(x, y, new Tile(Tileset.FLOOR1, room, new Position(x, y), this));
+                            break;
+                        case 1:
+                            setTile(x, y, new Tile(Tileset.FLOOR2, room, new Position(x, y), this));
+                            break;
+                    }
                 }
             }
         }

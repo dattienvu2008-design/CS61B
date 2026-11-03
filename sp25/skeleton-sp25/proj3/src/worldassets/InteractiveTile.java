@@ -4,8 +4,9 @@ import tileengine.TETileRenderer;
 import world.WorldMap;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class InteractiveTile extends Tile {
+public class InteractiveTile extends Tile implements Serializable {
     // Implement later!!!
     // May add something like tile status (trapped, poisonous, breakable, ...), some method to change tile status/terrain/something else
     // Not overengineering, just an insurrance for future ambition features:>

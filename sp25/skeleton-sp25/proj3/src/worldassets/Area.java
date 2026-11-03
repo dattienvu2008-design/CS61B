@@ -3,9 +3,17 @@ package worldassets;
 import world.World;
 import world.WorldMap;
 
-public class Area {
+import java.io.Serializable;
+
+public class Area implements Serializable {
     // May add HALLWAY and HALLWAY_INTERSECTION in the future
     public static final Area VOID = null;
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
     private final int width, height;
     private final Position position;
     private final Position center;
