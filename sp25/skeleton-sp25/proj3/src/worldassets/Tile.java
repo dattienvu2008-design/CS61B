@@ -1,6 +1,7 @@
 package worldassets;
 
 import Entity.Entity;
+import tileengine.TEEntityTileRenderer;
 import tileengine.TETileRenderer;
 import world.WorldMap;
 
@@ -9,9 +10,6 @@ import java.io.Serializable;
 public class Tile implements Serializable {
     private TETileRenderer tileType;
     public TETileRenderer getTileType() {
-        if (hasEntity()) {
-            return entity.getSkin();
-        }
         return tileType;
     }
     public void setTileType(TETileRenderer tileType) {
@@ -45,6 +43,9 @@ public class Tile implements Serializable {
     }
     public boolean hasEntity() {
         return entity != null;
+    }
+    public void drawEntity() {
+        ((TEEntityTileRenderer) entity.getSkin()).draw(getPos().getX(), getPos().getY(), entity.getHealthPercentage());
     }
 
     public Tile(TETileRenderer tileType, Area area, Position pos, WorldMap map) {

@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class GameRunner implements Serializable {
     public final int WIDTH, HEIGHT;
@@ -124,6 +125,7 @@ public class GameRunner implements Serializable {
         setWorld(new World(initNumRooms, WIDTH, HEIGHT - 6, AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, seed));
         world.addPlayer(new Player(STANDARD_HEALTH, 1, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
         world.addPlayer(new Player(15, 2, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
+        HashSet<Character> player1ActionLst = new HashSet<>(Set.of('w', 'a', 's', 'd', 'z'));
 
         char c;
         Game:
@@ -131,35 +133,46 @@ public class GameRunner implements Serializable {
             ter.renderFrame(world.map);
             while (StdDraw.hasNextKeyTyped()) {
                 c = StdDraw.nextKeyTyped();
-                if (Character.isAlphabetic(c)) {
-                    c = Character.toLowerCase(c);
-                }
-                if ((c == 'w' || c == 'a' || c == 's' || c == 'd') && world.getPlayer(0).movementCooldown.onCooldown()) {
-                    continue;
-                }
-                switch (c) {
-                    case 'w':
-                        world.getPlayer(0).move(Direction.UP);
-                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
-                        break ;
-                    case 's':
-                        world.getPlayer(0).move(Direction.DOWN);
-                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
-                        break ;
-                    case 'a':
-                        world.getPlayer(0).move(Direction.LEFT);
-                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
-                        break ;
-                    case 'd':
-                        world.getPlayer(0).move(Direction.RIGHT);
-                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
-                        break;
-                    case '\u001B':
-                        break; //esc button, use to quit game or smt else?
-                    case 'q':
-                        break Game;
+                c = (Character.isAlphabetic(c))? Character.toLowerCase(c) : c;
+
+                if ((c == 'w' || c == 'a' || c == 's' || c == 'd') && world.getPlayer(0).movementCooldown.onCooldown()) continue;
+
+                if (player1ActionLst.contains(c)) {
+                    player1Action(c);
+                } else if (c == 'q') {
+                    break Game;
                 }
             }
+        }
+    }
+
+    private void player1Action(char c) {
+        Player player = world.getPlayer(0);
+        switch (c) {
+            case 'w':
+                player.move(Direction.UP);
+                player.setCurrentDirection(Direction.UP);
+                player.movementCooldown.startCooldown(player.getMovementCooldownMillis());
+                break ;
+            case 's':
+                player.move(Direction.DOWN);
+                player.setCurrentDirection(Direction.DOWN);
+                player.movementCooldown.startCooldown(player.getMovementCooldownMillis());
+                break ;
+            case 'a':
+                player.move(Direction.LEFT);
+                player.setCurrentDirection(Direction.LEFT);
+                player.movementCooldown.startCooldown(player.getMovementCooldownMillis());
+                break ;
+            case 'd':
+                player.move(Direction.RIGHT);
+                player.setCurrentDirection(Direction.RIGHT);
+                player.movementCooldown.startCooldown(player.getMovementCooldownMillis());
+                break;
+            case 'z':
+                player.useSkill(0, player.getCurrentDirection());
+            case '\u001B':
+                break; //esc button, use to quit game or smt else?
         }
     }
 

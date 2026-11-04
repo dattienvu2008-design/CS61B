@@ -105,10 +105,9 @@ public class TERenderer {
                             + " is null.");
                 }
                 currentTile = world.getTile(x, y);
+                currentTile.getTileType().draw(x + xOffset, y + yOffset);
                 if (currentTile.hasEntity()) {
-                    ((TEEntityTileRenderer) currentTile.getTileType()).draw(x + xOffset, y + yOffset, currentTile.getEntity().getHealthPercentage());
-                } else {
-                    currentTile.getTileType().draw(x + xOffset, y + yOffset);
+                    currentTile.drawEntity();
                 }
             }
         }

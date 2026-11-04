@@ -19,9 +19,9 @@ public class Entity {
     }
 
     /**
-     * Apply damage on this entity. Return True if this entity is dead (currentHealth < 0), false otherwise
-     * @param damage
-     * @return
+     * Apply damage on this entity.
+     * @param damage Value of damage that this entity will be taken
+     * @return True if this entity is dead (currentHealth < 0), false otherwise
      */
     public boolean takeDamage(double damage) {
         currentHealth -= damage;
@@ -29,6 +29,7 @@ public class Entity {
             return false;
         } else {
             currentHealth = 0;
+            this.currentTile.removeEntity();
             return true;
         }
     }

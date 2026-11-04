@@ -12,6 +12,15 @@ import java.util.ArrayList;
 public class Player extends Entity{
     public final Cooldown movementCooldown = new Cooldown();
     private final ArrayList<AttackSkill> attackSkillsList = new ArrayList<>();
+
+    private Direction currentDirection;
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
     private AttackSkill getAttackSkill(int index) {
         return attackSkillsList.get(index);
     }
