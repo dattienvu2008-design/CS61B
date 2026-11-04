@@ -14,11 +14,14 @@ import worldassets.Tile;
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class GameRunner implements Serializable {
     public final int WIDTH, HEIGHT;
     public final int AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT;
+
+    private HashSet<World> worlds;
 
     private World world;
     private void setWorld(World world) {
@@ -117,10 +120,12 @@ public class GameRunner implements Serializable {
     private void gameRunnerSinglePlayer(int seed, TERenderer ter) {
         ter.resetFont();
         Random rand = new Random(seed);
+
         int initNumRooms = 9 + rand.nextInt(14);
-        char c;
         setWorld(new World(initNumRooms, WIDTH, HEIGHT - 6, AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, seed));
-        world.addPlayer(new Player(10, 1, Tileset.PLAYER, chooseRandomStartingPos(rand)));
+        world.addPlayer(new Player(10, 1, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
+
+        char c;
         Game:
         while (true) {
             ter.renderFrame(world.map);
@@ -129,21 +134,28 @@ public class GameRunner implements Serializable {
                 if (Character.isAlphabetic(c)) {
                     c = Character.toLowerCase(c);
                 }
+                if ((c == 'w' || c == 'a' || c == 's' || c == 'd') && world.getPlayer(0).movementCooldown.onCooldown()) {
+                    continue;
+                }
                 switch (c) {
                     case 'w':
                         world.getPlayer(0).move(Direction.UP);
+                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
                         break ;
                     case 's':
                         world.getPlayer(0).move(Direction.DOWN);
+                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
                         break ;
                     case 'a':
                         world.getPlayer(0).move(Direction.LEFT);
+                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
                         break ;
                     case 'd':
                         world.getPlayer(0).move(Direction.RIGHT);
+                        world.getPlayer(0).movementCooldown.startCooldown(world.getPlayer(0).getMovementCooldownMillis());
                         break;
                     case '\u001B':
-
+                        break; //esc button, use to quit game or smt else?
                     case 'q':
                         break Game;
                 }
