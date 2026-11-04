@@ -2,15 +2,12 @@ package world;
 
 import Entity.Entity;
 import Entity.Player;
-import edu.princeton.cs.algs4.StdDraw;
-import tileengine.TERenderer;
-import tileengine.Tileset;
+import renderengine.Tileset;
 import utils.RandomUtils;
 import worldassets.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -31,6 +28,9 @@ public class World implements Serializable {
     public Player getPlayer(int index) {
         return players.get(index);
     }
+    public int getNumPlayers() {
+        return players.size();
+    }
 
     private final HashSet<Entity> entities = new HashSet<>();
     public void addEntity(Entity entity) {
@@ -38,19 +38,6 @@ public class World implements Serializable {
     }
     public void removeEntity(Entity entity) {
         entities.remove(entity);
-    }
-
-    static void main(String[] args) {
-        final int WIDTH = 80, HEIGHT = 45;
-        final int AVG_ROOM_WIDTH = 16, AVG_ROOM_HEIGHT = 13;
-        TERenderer ter = new TERenderer();
-        ter.initialize(WIDTH, HEIGHT);
-        World world1;
-        for (int i = 234; i < 23407; i = i + 2) {
-            world1 = new World(6, WIDTH, HEIGHT, AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, i);
-            ter.renderFrame(world1.map);
-            StdDraw.pause(2000);
-        }
     }
 
     public World(int numRooms, int width, int height, int avgRoomWidth, int avgRoomHeight, int seed /* And some more parameters! */) {

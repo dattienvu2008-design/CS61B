@@ -1,5 +1,8 @@
-package tileengine;
+package renderengine;
 
+import Entity.Action.AttackSkill;
+import Entity.Player;
+import world.World;
 import world.WorldMap;
 import edu.princeton.cs.algs4.StdDraw;
 import worldassets.Tile;
@@ -84,9 +87,10 @@ public class TERenderer {
      * the screen in tiles.
      * @param world the 2D TETile[][] array to render
      */
-    public void renderFrame(WorldMap world) {
+    public void renderFrame(World world, int width, int height) {
         StdDraw.clear(new Color(0, 0, 0));
-        drawTiles(world);
+        drawTiles(world.map);
+        renderHUD(world, width, height);
         StdDraw.show();
     }
 
@@ -111,6 +115,34 @@ public class TERenderer {
                 }
             }
         }
+    }
+
+    public void renderHUD(World world, int width, int height) {
+        int currentPlayerX = (int) (width*0.02), currentPlayerY = (int) (height*0.978);
+        StdDraw.setPenColor(Color.WHITE);
+        Player currentPlayer;   AttackSkill currentSkill;
+        for (int i = 0; i < world.getNumPlayers(); i++) {
+            StdDraw.setFont(new Font("Monaco", Font.BOLD, TILE_SIZE + 5));
+            StdDraw.setPenColor(Color.WHITE);
+            StdDraw.textLeft(currentPlayerX, currentPlayerY, "Player " + i + ":");
+
+            currentPlayer = world.getPlayer(i);
+            for (int skillIndex = 0; skillIndex < currentPlayer.getNumSkills(); skillIndex++) {
+                StdDraw.setFont(new Font("Monaco", Font.BOLD, TILE_SIZE - 1));
+
+                currentSkill = currentPlayer.getAttackSkill(skillIndex);
+                StdDraw.textLeft(currentPlayerX, currentPlayerY - height * 0.03, currentSkill.getSkillName().name);
+                StdDrawUtils.drawRectBottomLeft(currentPlayerX, currentPlayerY - height * 0.05, width * 0.0225, height * 0.005);
+                StdDraw.setPenColor(Color.GREEN);
+                StdDrawUtils.filledRectBottomLeft(currentPlayerX, currentPlayerY - height * 0.05,
+                        width * 0.0225 * currentPlayer.getCooldownPercentageOfSkill(0), height * 0.005);
+                currentPlayerX += (int) (width * 0.05);
+            }
+
+            currentPlayerX = (int) (currentPlayerX + width * 0.2);
+        }
+        StdDraw.show();
+        resetFont();
     }
 
     /**

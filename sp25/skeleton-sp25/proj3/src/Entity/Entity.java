@@ -1,6 +1,6 @@
 package Entity;
 
-import tileengine.TETileRenderer;
+import renderengine.TETileRenderer;
 import worldassets.Direction;
 import worldassets.Tile;
 
@@ -45,6 +45,9 @@ public class Entity {
     public Tile getCurrentTile() {
         return currentTile;
     }
+    protected void setCurrentTile(Tile tile) {
+        currentTile = tile;
+    }
 //    private WorldMap map;
 
     private TETileRenderer skin;
@@ -62,7 +65,8 @@ public class Entity {
 
     public void move(Direction direction) {
         Tile destination = direction.getTile(currentTile);
-        if (destination != null && !destination.getTileType().blockable) {
+        if (destination != null && !destination.getTileType().blockable &&
+                ((destination.hasEntity() && !destination.getEntity().getSkin().blockable) || !destination.hasEntity())) {
             destination.setEntity(this);
             currentTile.removeEntity();
             currentTile = destination;

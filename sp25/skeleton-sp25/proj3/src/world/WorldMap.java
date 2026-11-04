@@ -1,7 +1,7 @@
 package world;
 
 import datastructure.WeightedQuickUnion;
-import tileengine.Tileset;
+import renderengine.Tileset;
 import worldassets.Area;
 import worldassets.Position;
 import worldassets.Room;

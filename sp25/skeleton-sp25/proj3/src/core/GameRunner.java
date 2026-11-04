@@ -1,8 +1,8 @@
 package core;
 
 import edu.princeton.cs.algs4.StdDraw;
-import tileengine.TERenderer;
-import tileengine.Tileset;
+import renderengine.TERenderer;
+import renderengine.Tileset;
 import world.World;
 import Entity.Player;
 import worldassets.Direction;
@@ -39,7 +39,7 @@ public class GameRunner implements Serializable {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
         World blankWorld = new World(0, 0, 0, 0, 0, 0);
-        ter.renderFrame(blankWorld.map);
+        ter.renderFrame(blankWorld, WIDTH, HEIGHT);
         mainMenu(ter);
     }
 
@@ -122,15 +122,15 @@ public class GameRunner implements Serializable {
         Random rand = new Random(seed);
 
         int initNumRooms = 9 + rand.nextInt(14);
-        setWorld(new World(initNumRooms, WIDTH, HEIGHT - 6, AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, seed));
+        setWorld(new World(initNumRooms, WIDTH, (int) (HEIGHT*0.875), AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, seed));
         world.addPlayer(new Player(STANDARD_HEALTH, 1, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
-        world.addPlayer(new Player(15, 2, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
+        world.addPlayer(new Player(6, 2, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
         HashSet<Character> player1ActionLst = new HashSet<>(Set.of('w', 'a', 's', 'd', 'z'));
 
         char c;
         Game:
         while (true) {
-            ter.renderFrame(world.map);
+            ter.renderFrame(world, WIDTH, HEIGHT);
             while (StdDraw.hasNextKeyTyped()) {
                 c = StdDraw.nextKeyTyped();
                 c = (Character.isAlphabetic(c))? Character.toLowerCase(c) : c;
@@ -139,7 +139,7 @@ public class GameRunner implements Serializable {
 
                 if (player1ActionLst.contains(c)) {
                     player1Action(c);
-                } else if (c == 'q') {
+                } else if (c == '\u001B') {
                     break Game;
                 }
             }
@@ -171,8 +171,6 @@ public class GameRunner implements Serializable {
                 break;
             case 'z':
                 player.useSkill(0, player.getCurrentDirection());
-            case '\u001B':
-                break; //esc button, use to quit game or smt else?
         }
     }
 

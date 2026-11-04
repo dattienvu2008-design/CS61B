@@ -1,7 +1,7 @@
 package core;
 
 public class Main {
-    public static final int WIDTH = 90, HEIGHT = 48;
+    public static final int WIDTH = 95, HEIGHT = 48;
     public static final int AVG_ROOM_WIDTH = 14, AVG_ROOM_HEIGHT = 11;
     public static final int STANDARD_HEALTH = 5;
 

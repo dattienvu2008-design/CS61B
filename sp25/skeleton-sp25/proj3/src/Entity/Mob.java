@@ -1,6 +1,6 @@
 package Entity;
 
-import tileengine.TETileRenderer;
+import renderengine.TETileRenderer;
 import worldassets.Tile;
 
 public class Mob extends Entity{

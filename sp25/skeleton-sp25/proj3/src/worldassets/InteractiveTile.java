@@ -1,9 +1,8 @@
 package worldassets;
 
-import tileengine.TETileRenderer;
+import renderengine.TETileRenderer;
 import world.WorldMap;
 
-import java.awt.*;
 import java.io.Serializable;
 
 public class InteractiveTile extends Tile implements Serializable {

@@ -2,7 +2,7 @@ package Entity;
 
 import Entity.Action.AttackSkill;
 import Entity.Action.Punch;
-import tileengine.TETileRenderer;
+import renderengine.TETileRenderer;
 import world.World;
 import worldassets.Direction;
 import worldassets.Tile;
@@ -11,7 +11,19 @@ import java.util.ArrayList;
 
 public class Player extends Entity{
     public final Cooldown movementCooldown = new Cooldown();
+
     private final ArrayList<AttackSkill> attackSkillsList = new ArrayList<>();
+    public int getNumSkills() {
+        return attackSkillsList.size();
+    }
+    public AttackSkill getAttackSkill(int index) {
+        return attackSkillsList.get(index);
+    }
+
+    private final ArrayList<Cooldown> attackSkillsCd = new ArrayList<>();
+    private Cooldown getAttackSkillCd(int index) {
+        return attackSkillsCd.get(index);
+    }
 
     private Direction currentDirection;
     public void setCurrentDirection(Direction currentDirection) {
@@ -19,10 +31,6 @@ public class Player extends Entity{
     }
     public Direction getCurrentDirection() {
         return currentDirection;
-    }
-
-    private AttackSkill getAttackSkill(int index) {
-        return attackSkillsList.get(index);
     }
 
     public int getMovementCooldownMillis() {
@@ -37,10 +45,19 @@ public class Player extends Entity{
 
     public Player(int health, int ID, TETileRenderer skin, Tile currentPos, World world) {
         super(health, ID, skin, currentPos);
-        attackSkillsList.add(Punch.standardPuch);
+        attackSkillsList.add(Punch.standardPuch); attackSkillsCd.add(new Cooldown());
+        setCurrentDirection(Direction.LEFT);
     }
 
     public void useSkill(int index, Direction direction) {
-        getAttackSkill(index).useSkill(getCurrentTile(), direction);
+        AttackSkill currentSkill = getAttackSkill(index);
+        if (!getAttackSkillCd(index).onCooldown()) {
+            currentSkill.useSkill(getCurrentTile(), direction);
+            getAttackSkillCd(index).startCooldown(currentSkill.getCooldownTime());
+        }
+    }
+
+    public double getCooldownPercentageOfSkill(int index) {
+        return 1 - (getAttackSkillCd(index).cooldownMillisLeft() / getAttackSkill(index).getCooldownTime());
     }
 }

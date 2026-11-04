@@ -21,4 +21,10 @@ public class Cooldown {
     public boolean onCooldown() {
         return System.currentTimeMillis() < targetTimeMillis;
     }
+
+    public double cooldownMillisLeft() {
+        double secLeft = targetTimeMillis - System.currentTimeMillis();
+        secLeft = (secLeft < 0)? 0 : secLeft;
+        return secLeft;
+    }
 }

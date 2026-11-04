@@ -1,4 +1,4 @@
-package tileengine;
+package renderengine;
 
 import edu.princeton.cs.algs4.StdDraw;
 

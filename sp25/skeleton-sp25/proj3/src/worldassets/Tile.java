@@ -1,8 +1,8 @@
 package worldassets;
 
 import Entity.Entity;
-import tileengine.TEEntityTileRenderer;
-import tileengine.TETileRenderer;
+import renderengine.TEEntityTileRenderer;
+import renderengine.TETileRenderer;
 import world.WorldMap;
 
 import java.io.Serializable;
