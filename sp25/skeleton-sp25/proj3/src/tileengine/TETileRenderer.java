@@ -29,7 +29,28 @@ public class TETileRenderer {
     private final String filepath;
     private final int id;
     public final boolean blockable;
-//    private RectengularArea area;
+
+    public boolean isBlockable() {
+        return blockable;
+    }
+    public int getId() {
+        return id;
+    }
+    public String getFilepath() {
+        return filepath;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+    public Color getTextColor() {
+        return textColor;
+    }
+    public char getCharacter() {
+        return character;
+    }
 
     /**
      * Full constructor for TETile objects.
@@ -106,7 +127,6 @@ public class TETileRenderer {
     public TETileRenderer(TETileRenderer t, char c) {
         this(c, t.textColor, t.backgroundColor, t.description, t.filepath, t.id, t.blockable);
     }
-
 
     /**
      * Draws the tile to the screen at location x, y. If a valid filepath is provided,

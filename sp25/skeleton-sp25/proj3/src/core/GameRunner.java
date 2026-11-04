@@ -4,8 +4,6 @@ import edu.princeton.cs.algs4.StdDraw;
 import tileengine.TERenderer;
 import tileengine.Tileset;
 import world.World;
-import world.WorldMap;
-import Entity.Entity;
 import Entity.Player;
 import worldassets.Direction;
 import worldassets.Room;
@@ -13,13 +11,13 @@ import worldassets.Tile;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
 public class GameRunner implements Serializable {
     public final int WIDTH, HEIGHT;
     public final int AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT;
+    public final int STANDARD_HEALTH;
 
     private HashSet<World> worlds;
 
@@ -28,11 +26,12 @@ public class GameRunner implements Serializable {
         this.world = world;
     }
 
-    public GameRunner(int width, int height, int avgRoomWidth, int avgRoomHeight) {
+    public GameRunner(int width, int height, int avgRoomWidth, int avgRoomHeight, int standardHealth) {
         WIDTH = width;
         HEIGHT = height;
         AVG_ROOM_HEIGHT = avgRoomHeight;
         AVG_ROOM_WIDTH = avgRoomWidth;
+        this.STANDARD_HEALTH = standardHealth;
     }
 
     public void startGame() {
@@ -123,7 +122,8 @@ public class GameRunner implements Serializable {
 
         int initNumRooms = 9 + rand.nextInt(14);
         setWorld(new World(initNumRooms, WIDTH, HEIGHT - 6, AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, seed));
-        world.addPlayer(new Player(10, 1, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
+        world.addPlayer(new Player(STANDARD_HEALTH, 1, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
+        world.addPlayer(new Player(15, 2, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
 
         char c;
         Game:

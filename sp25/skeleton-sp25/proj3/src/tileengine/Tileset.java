@@ -17,7 +17,6 @@ import java.awt.Color;
  */
 
 public class Tileset {
-    public static final TETileRenderer PLAYER = new TETileRenderer('@', Color.white, Color.black, "you", "kenney_tiny-dungeon/Tiles/tile_0098.png", 0);
     public static final TETileRenderer WALL = new TETileRenderer('#', new Color(216, 128, 128), Color.darkGray,
             "wall", "kenney_tiny-dungeon/Tiles/tile_0014.png", 1, true);
     public static final TETileRenderer FLOOR1 = new TETileRenderer('·', new Color(128, 192, 128), Color.black, "floor", "kenney_tiny-dungeon/Tiles/tile_0048.png", 2);
@@ -35,6 +34,10 @@ public class Tileset {
     public static final TETileRenderer TREE = new TETileRenderer('♠', Color.green, Color.black, "tree", 11);
 
     public static final TETileRenderer CELL = new TETileRenderer('█', Color.white, Color.black, "cell", 12);
+
+    // Entity Tile:
+    public static final TEEntityTileRenderer PLAYER = new TEEntityTileRenderer(
+            '@', Color.white, Color.black, "you", "kenney_tiny-dungeon/Tiles/tile_0098.png", 0, true);
 
     // Interactive tile:
     // May add more in the future =))))

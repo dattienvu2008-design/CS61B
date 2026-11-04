@@ -5,9 +5,45 @@ import worldassets.Direction;
 import worldassets.Tile;
 
 public class Entity {
-    private double health;
+    private double maxHealth;
+    private double currentHealth;
+
+    public double getMaxHealth() {
+        return maxHealth;
+    }
+    public double getCurrentHealth() {
+        return currentHealth;
+    }
+    public double getHealthPercentage() {
+        return currentHealth/maxHealth;
+    }
+
+    /**
+     * Apply damage on this entity. Return True if this entity is dead (currentHealth < 0), false otherwise
+     * @param damage
+     * @return
+     */
+    public boolean takeDamage(double damage) {
+        currentHealth -= damage;
+        if (currentHealth > 0) {
+            return false;
+        } else {
+            currentHealth = 0;
+            return true;
+        }
+    }
+    public void heal(double healAmount) {
+        currentHealth += healAmount;
+        if (currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        }
+    }
+
     private final int ID;
-    private Tile currentPos;
+    private Tile currentTile;
+    public Tile getCurrentTile() {
+        return currentTile;
+    }
 //    private WorldMap map;
 
     private TETileRenderer skin;
@@ -15,29 +51,20 @@ public class Entity {
         return skin;
     }
 
-    public Entity(int health, int ID, TETileRenderer skin, Tile currentPos) {
-        this.health = health;
+    public Entity(int maxHealth, int ID, TETileRenderer skin, Tile currentTile) {
+        this.maxHealth = this.currentHealth = maxHealth;
         this.ID = ID;
         this.skin = skin;
-        this.currentPos = currentPos;
-        currentPos.setEntity(this);
+        this.currentTile = currentTile;
+        currentTile.setEntity(this);
     }
 
     public void move(Direction direction) {
-        Tile destination = null;
-        if (direction == Direction.UP) {
-            destination = currentPos.getTopTile();
-        } else if (direction == Direction.DOWN) {
-            destination = currentPos.getBottomTile();
-        } else if (direction == Direction.LEFT) {
-            destination = currentPos.getLeftTile();
-        } else if (direction == Direction.RIGHT) {
-            destination = currentPos.getRightTile();
-        }
+        Tile destination = direction.getTile(currentTile);
         if (destination != null && !destination.getTileType().blockable) {
             destination.setEntity(this);
-            currentPos.removeEntity();
-            currentPos = destination;
+            currentTile.removeEntity();
+            currentTile = destination;
         }
     }
 }

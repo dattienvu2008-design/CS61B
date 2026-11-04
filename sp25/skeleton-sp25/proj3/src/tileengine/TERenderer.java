@@ -1,8 +1,8 @@
 package tileengine;
 
 import world.WorldMap;
-import worldassets.InteractiveTile;
 import edu.princeton.cs.algs4.StdDraw;
+import worldassets.Tile;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -97,13 +97,19 @@ public class TERenderer {
     public void drawTiles(WorldMap world) {
         int numXTiles = world.getWidth();
         int numYTiles = world.getHeight();
+        Tile currentTile;
         for (int x = 0; x < numXTiles; x += 1) {
             for (int y = 0; y < numYTiles; y += 1) {
                 if (world.getTile(x, y) == null) {
                     throw new IllegalArgumentException("Tile at position x=" + x + ", y=" + y
                             + " is null.");
                 }
-                world.getTile(x,y).getTileType().draw(x + xOffset, y + yOffset);
+                currentTile = world.getTile(x, y);
+                if (currentTile.hasEntity()) {
+                    ((TEEntityTileRenderer) currentTile.getTileType()).draw(x + xOffset, y + yOffset, currentTile.getEntity().getHealthPercentage());
+                } else {
+                    currentTile.getTileType().draw(x + xOffset, y + yOffset);
+                }
             }
         }
     }

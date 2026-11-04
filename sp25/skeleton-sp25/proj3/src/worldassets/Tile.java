@@ -34,6 +34,9 @@ public class Tile implements Serializable {
     private final WorldMap map;
 
     private Entity entity = null;
+    public Entity getEntity() {
+        return entity;
+    }
     public void setEntity(Entity entity) {
         this.entity = entity;
     }
