@@ -1,19 +1,20 @@
-package worldassets;
+package worldassets.area;
 
-import world.WorldMap;
+import world.WorldChunk;
+import worldassets.Position;
+import worldassets.tile.Tile;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Random;
 
 public class Room extends Area implements Serializable {
     public final Random rand;
-    public Room(Position pos, int width, int height, WorldMap map, Random rand) {
+    public Room(Position pos, int width, int height, WorldChunk map, Random rand) {
         super(pos, width, height, map);
         this.rand = rand;
     }
 
-    public Tile getRandomEmptyTile(WorldMap map) {
+    public Tile getRandomEmptyTile(WorldChunk map) {
         int xOff, yOff;
         Tile choosenTile;
         while (true) {

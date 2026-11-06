@@ -1,8 +1,9 @@
 package Entity;
 
 import renderengine.TETileRenderer;
+import world.WorldChunk;
 import worldassets.Direction;
-import worldassets.Tile;
+import worldassets.tile.Tile;
 
 public class Entity {
     private double maxHealth;
@@ -54,20 +55,38 @@ public class Entity {
     public TETileRenderer getSkin() {
         return skin;
     }
+    public void setSkin(TETileRenderer newSkin) {
+        skin = newSkin;
+    }
 
     public Entity(int maxHealth, int ID, TETileRenderer skin, Tile currentTile) {
         this.maxHealth = this.currentHealth = maxHealth;
         this.ID = ID;
         this.skin = skin;
         this.currentTile = currentTile;
-        currentTile.setEntity(this);
+        currentTile.moveEntityToThis(this);
+    }
+
+    public Entity(double maxHealth, int ID, TETileRenderer skin, Tile currentTile) {
+        this.maxHealth = this.currentHealth = maxHealth;
+        this.ID = ID;
+        this.skin = skin;
+        this.currentTile = currentTile;
+        currentTile.moveEntityToThis(this);
     }
 
     public void move(Direction direction) {
         Tile destination = direction.getTile(currentTile);
-        if (destination != null && !destination.getTileType().blockable &&
-                ((destination.hasEntity() && !destination.getEntity().getSkin().blockable) || !destination.hasEntity())) {
-            destination.setEntity(this);
+        if (destination != null && destination.isTileWalkable()) {
+            destination.moveEntityToThis(this);
+            currentTile.removeEntity();
+            currentTile = destination;
+        }
+    }
+
+    public void teleport(Tile destination) {
+        if (destination != null && destination.isTileWalkable()) {
+            destination.moveEntityToThis(this);
             currentTile.removeEntity();
             currentTile = destination;
         }

@@ -3,11 +3,14 @@ package core;
 import edu.princeton.cs.algs4.StdDraw;
 import renderengine.TERenderer;
 import renderengine.Tileset;
+import world.DungeonGenerator;
 import world.World;
-import Entity.Player;
+import Entity.Character.Player;
+import world.WorldChunk;
 import worldassets.Direction;
-import worldassets.Room;
-import worldassets.Tile;
+import worldassets.Position;
+import worldassets.area.Room;
+import worldassets.tile.Tile;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -19,6 +22,10 @@ public class GameRunner implements Serializable {
     public final int WIDTH, HEIGHT;
     public final int AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT;
     public final int STANDARD_HEALTH;
+    private int currentSeed;
+    public int getCurrentSeed() {
+        return currentSeed;
+    }
 
     private HashSet<World> worlds;
 
@@ -26,6 +33,7 @@ public class GameRunner implements Serializable {
     private void setWorld(World world) {
         this.world = world;
     }
+    private WorldChunk currentChunk;
 
     public GameRunner(int width, int height, int avgRoomWidth, int avgRoomHeight, int standardHealth) {
         WIDTH = width;
@@ -38,8 +46,6 @@ public class GameRunner implements Serializable {
     public void startGame() {
         TERenderer ter = new TERenderer();
         ter.initialize(WIDTH, HEIGHT);
-        World blankWorld = new World(0, 0, 0, 0, 0, 0);
-        ter.renderFrame(blankWorld, WIDTH, HEIGHT);
         mainMenu(ter);
     }
 
@@ -118,19 +124,21 @@ public class GameRunner implements Serializable {
     }
 
     private void gameRunnerSinglePlayer(int seed, TERenderer ter) {
+        this.currentSeed = seed;
+
         ter.resetFont();
         Random rand = new Random(seed);
 
-        int initNumRooms = 9 + rand.nextInt(14);
-        setWorld(new World(initNumRooms, WIDTH, (int) (HEIGHT*0.875), AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, seed));
-        world.addPlayer(new Player(STANDARD_HEALTH, 1, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
-        world.addPlayer(new Player(6, 2, Tileset.PLAYER, chooseRandomStartingPos(rand), world));
+        Position initPos = new Position(0, 0);
+        setWorld(new World(WIDTH, (int) (HEIGHT*0.875), AVG_ROOM_WIDTH, AVG_ROOM_HEIGHT, seed));
+        world.addPlayer(new Player(STANDARD_HEALTH, 1, Tileset.PLAYER, chooseRandomStartingPos(initPos, rand), world));
         HashSet<Character> player1ActionLst = new HashSet<>(Set.of('w', 'a', 's', 'd', 'z'));
 
         char c;
         Game:
         while (true) {
-            ter.renderFrame(world, WIDTH, HEIGHT);
+            // TODO: Implementing going between each chunk
+            ter.renderFrame(world, world.getChunk(0, 0), WIDTH, HEIGHT);
             while (StdDraw.hasNextKeyTyped()) {
                 c = StdDraw.nextKeyTyped();
                 c = (Character.isAlphabetic(c))? Character.toLowerCase(c) : c;
@@ -174,13 +182,15 @@ public class GameRunner implements Serializable {
         }
     }
 
-    private Tile chooseRandomStartingPos(Random rand) {
-        int numRooms = world.map.getNumRooms();
-        Room choosenRoom = world.map.getRoom(rand.nextInt(numRooms));
-        Tile choosenTile = choosenRoom.getRandomEmptyTile(world.map);
+    private Tile chooseRandomStartingPos(Position chunkPos, Random rand) {
+        WorldChunk currentChunk = world.getChunk(chunkPos);
+
+        int numRooms = currentChunk.getNumRooms();
+        Room choosenRoom = currentChunk.getRoom(rand.nextInt(numRooms));
+        Tile choosenTile = choosenRoom.getRandomEmptyTile(currentChunk);
         while (choosenTile.hasEntity()) {
-            choosenRoom = world.map.getRoom(rand.nextInt(numRooms));
-            choosenTile = choosenRoom.getRandomEmptyTile(world.map);
+            choosenRoom = currentChunk.getRoom(rand.nextInt(numRooms));
+            choosenTile = choosenRoom.getRandomEmptyTile(currentChunk);
         }
         return choosenTile;
     }

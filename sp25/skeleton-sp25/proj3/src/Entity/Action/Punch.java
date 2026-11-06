@@ -1,7 +1,7 @@
 package Entity.Action;
 
 import worldassets.Direction;
-import worldassets.Tile;
+import worldassets.tile.Tile;
 
 public class Punch implements AttackSkill {
     private final double damage;

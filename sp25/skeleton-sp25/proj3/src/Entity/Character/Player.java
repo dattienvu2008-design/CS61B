@@ -1,15 +1,17 @@
-package Entity;
+package Entity.Character;
 
 import Entity.Action.AttackSkill;
 import Entity.Action.Punch;
+import Entity.Entity;
 import renderengine.TETileRenderer;
 import world.World;
 import worldassets.Direction;
-import worldassets.Tile;
+import worldassets.tile.Tile;
+import Entity.Cooldown;
 
 import java.util.ArrayList;
 
-public class Player extends Entity{
+public class Player extends Entity {
     public final Cooldown movementCooldown = new Cooldown();
 
     private final ArrayList<AttackSkill> attackSkillsList = new ArrayList<>();

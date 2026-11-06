@@ -1,24 +1,47 @@
 package world;
 
 import Entity.Entity;
-import Entity.Player;
-import renderengine.Tileset;
-import utils.RandomUtils;
+import Entity.Character.Player;
 import worldassets.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 /*
 * Use for constructing map and storing information about state of that map (Specs may change in the future)
 * */
 public class World implements Serializable {
     // Attributes:
-    public final WorldMap map;
-    // private /*final*/ HashMap<AreaType, Area[]> areas;
-    private final int width, height, avgRoomWidth, avgRoomHeight;
+    public final HashMap<Position, WorldChunk> chunks = new HashMap<>();
+    public void addChunk(Position pos, WorldChunk chunk) {
+        chunks.put(pos, chunk);
+    }
+    public WorldChunk getChunk(Position pos) {
+        return chunks.get(pos);
+    }
+    public WorldChunk getChunk(int x, int y) {
+        return chunks.get(new Position(x, y));
+    }
+//    public Position getPosForNewChunk(WorldChunk chunk) {
+//        List<Integer> allPossibleX = List.of(-1, 0, 1);
+//        Collections.shuffle(allPossibleX, chunk.rand);
+//        List<Integer> allPossibleY = List.of(-1, 0, 1);
+//        int x = chunk.chunkPos.getX(), y = chunk.chunkPos.getY();
+//        for (Integer X : allPossibleX) {
+//            for (Integer Y : allPossibleY) {
+//                if (!isPosHaveChunk(new Position(x + X * WIDTH, y + Y * HEIGHT))) {
+//                    return new Position(x + X * WIDTH, y + Y * HEIGHT);
+//                }
+//            }
+//        }
+//        return null;
+//    }
+//    private boolean isPosHaveChunk(Position position) {
+//        return getChunk(position) != null;
+//    }
+
+
+    public final int WIDTH, HEIGHT, avgRoomWidth, avgRoomHeight;
     private final Random rand;
 
     private final ArrayList<Player> players = new ArrayList<>();
@@ -40,109 +63,19 @@ public class World implements Serializable {
         entities.remove(entity);
     }
 
-    public World(int numRooms, int width, int height, int avgRoomWidth, int avgRoomHeight, int seed /* And some more parameters! */) {
-        // For Debugging only!!!
-//        ter = new TERenderer();
-//        ter.initialize(width, height);
-
+    public World(int width, int height, int avgRoomWidth, int avgRoomHeight, int seed) {
         rand = new Random(seed);
-        map = new WorldMap(width, height, rand);
-        this.width = width;
-        this.height = height;
+        this.WIDTH = width;
+        this.HEIGHT = height;
         this.avgRoomWidth = avgRoomWidth;
         this.avgRoomHeight = avgRoomHeight;
-        generateRandomMap(numRooms);
+        WorldChunk initChunk = DungeonGenerator.generateRandomChunk(new Position(0, 0), seed,
+                width, height, avgRoomWidth, avgRoomHeight);
+        addChunk(initChunk.chunkPos, initChunk);
     }
 
     // Getter:
     /**
     * Get a safe copy of rooms, with no null element inside
     * */
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    // Setter:
-
-    // Private Helper Method:
-    private void generateRandomMap(int numRooms) {
-        //Generating map with respect to params
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                map.setTile(x, y, new Tile(Tileset.NOTHING, Area.VOID, new Position(x, y), map));
-            }
-        }
-        Position pos;
-        int randWidth, randHeight;
-        int lowerBound = Math.min(avgRoomHeight, avgRoomWidth), upperBound = Math.max(avgRoomHeight, avgRoomWidth);
-        int numTry = 0;
-
-        createRoomLoop:
-        for (int i = 0; i < numRooms; i++) {
-            if (numTry > 1000) {
-                break createRoomLoop;
-            }
-            pos = (i == 0)? getRandomPos(rand) : getRandomRoomCenterByDistance(rand);
-            randWidth = (int) RandomUtils.gaussian(rand, avgRoomWidth, 1.7);
-            randHeight = (int) RandomUtils.gaussian(rand, avgRoomHeight, 1.7);
-            pos = Area.centerToTopLeftPos(pos, randWidth, randHeight, this);
-
-            for (int roomIndex = 0; roomIndex < map.getNumRooms(); roomIndex++) {
-                if (map.getRoom(roomIndex).isAdjacentOrOverlap(new Room(pos, randWidth, randHeight, map, rand))) {
-                    i--;
-                    numTry++;
-                    continue createRoomLoop;
-                }
-            }
-            map.createRoom(pos, randWidth, randHeight);
-            numTry = 0;
-        }
-
-        if (numRooms > 1) {
-            for (Integer[] roomsLst : map.findMST()) {
-                map.createHallway(map.getRoom(roomsLst[0]), map.getRoom(roomsLst[1]));
-            }
-        }
-    }
-
-    private Position getRandomPos(Random rand) {
-        int x = RandomUtils.uniform(rand, 0, width);
-        int y = RandomUtils.uniform(rand, 0, height);
-        return new Position(x, y);
-    } // Worked!
-
-    private Position getRandomRoomCenterByDistance(Random rand) {
-        int numCandidates = 300; // use here for future changes
-        int totalDist = 0;
-        Position[] candidates = new Position[numCandidates];
-        Position currentPos; int currentTotalDist;
-        Integer[] candidatesTotalDists = new Integer[numCandidates];
-        for (int i = 0; i < numCandidates; i++) {
-            currentPos = getRandomPos(rand);
-            candidates[i] = currentPos;
-            currentTotalDist = currentPos.calculatePositionScore(map.getRoomsLst());
-            candidatesTotalDists[i] = (i == 0)? (currentTotalDist) : (currentTotalDist + candidatesTotalDists[i-1]);
-            totalDist += currentTotalDist;
-        }
-        int roulette = RandomUtils.uniform(rand, 1, totalDist + 1);
-        for (int i = 0; i < numCandidates; i++) {
-            if (roulette <= candidatesTotalDists[i]) {
-                return candidates[i];
-            }
-        }
-        return candidates[numCandidates - 1];
-    } // Worked!
-
-    private boolean validPos(int xPos, int yPos) {
-        // Need to bring to Position
-        return xPos >= 0 && yPos >= 0 && xPos < width && yPos < height;
-    } // Worked!
-
-    // Public Method:
-
 }

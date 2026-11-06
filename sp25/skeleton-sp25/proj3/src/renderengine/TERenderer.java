@@ -1,11 +1,13 @@
 package renderengine;
 
 import Entity.Action.AttackSkill;
-import Entity.Player;
+import Entity.Character.Player;
+import Entity.Entity;
 import world.World;
-import world.WorldMap;
+import world.WorldChunk;
 import edu.princeton.cs.algs4.StdDraw;
-import worldassets.Tile;
+import worldassets.Position;
+import worldassets.tile.Tile;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -87,34 +89,38 @@ public class TERenderer {
      * the screen in tiles.
      * @param world the 2D TETile[][] array to render
      */
-    public void renderFrame(World world, int width, int height) {
+    public void renderFrame(World world, WorldChunk chunk, int width, int height) {
         StdDraw.clear(new Color(0, 0, 0));
-        drawTiles(world.map);
+        drawTiles(chunk); // Issue 1
         renderHUD(world, width, height);
         StdDraw.show();
     }
 
     /**
-     * Draws all world tiles without clearing the canvas or showing the tiles.
-     * @param world the 2D TETile[][] array to render
+     * Draws all chunk tiles without clearing the canvas or showing the tiles.
+     * @param chunk the 2D TETile[][] array to render
      */
-    public void drawTiles(WorldMap world) {
-        int numXTiles = world.getWidth();
-        int numYTiles = world.getHeight();
+    public void drawTiles(WorldChunk chunk) {
+        int numXTiles = chunk.width;
+        int numYTiles = chunk.height;
         Tile currentTile;
         for (int x = 0; x < numXTiles; x += 1) {
             for (int y = 0; y < numYTiles; y += 1) {
-                if (world.getTile(x, y) == null) {
+                if (chunk.getTile(x, y) == null) {
                     throw new IllegalArgumentException("Tile at position x=" + x + ", y=" + y
                             + " is null.");
                 }
-                currentTile = world.getTile(x, y);
+                currentTile = chunk.getTile(x, y);
                 currentTile.getTileType().draw(x + xOffset, y + yOffset);
                 if (currentTile.hasEntity()) {
-                    currentTile.drawEntity();
+                    drawEntity(currentTile.getEntity(), currentTile.getPos());
                 }
             }
         }
+    }
+
+    public void drawEntity(Entity entity, Position pos) {
+        ((TEEntityTileRenderer) entity.getSkin()).draw(pos.getX(), pos.getY(), entity.getHealthPercentage());
     }
 
     public void renderHUD(World world, int width, int height) {

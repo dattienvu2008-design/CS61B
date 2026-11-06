@@ -2,7 +2,7 @@
 //
 //import renderengine.TETileRenderer;
 //import worldassets.Direction;
-//import worldassets.Tile;
+//import worldassets.tile.Tile;
 //
 //public class Bullet extends Entity{
 //    private Direction direction;

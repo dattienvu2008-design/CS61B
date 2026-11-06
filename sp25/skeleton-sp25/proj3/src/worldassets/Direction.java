@@ -1,5 +1,7 @@
 package worldassets;
 
+import worldassets.tile.Tile;
+
 import java.io.Serializable;
 
 public enum Direction implements Serializable {

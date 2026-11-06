@@ -1,0 +1,12 @@
+Refactoring Progress:
+1. WorldMap
+2. Area/Room
+
+Issue:
+1. TERenderer.drawTile + World.map:
+ - Need to change WorldChunk map -> List<WorldChunk> maps or something else (SOLVED, change to HashMap<Position, WorldChunk>)
+ - Need to render chunk that contain player instead of formal chunk
+2. Room Constructor:
+ - Delete parameter random
+3. Tile.entity:
+ - Change Entity entity -> List<Entity> entities or something else

@@ -1,27 +1,27 @@
 package worldassets;
 
-import world.World;
-import world.WorldMap;
+import world.WorldChunk;
+import worldassets.area.Area;
 
 import java.io.Serializable;
 
 public class Position implements Serializable {
-    private final double xPos, yPos;
+    private final int xPos, yPos;
 
-    public Position(double xPos, double yPos) {
+    public Position(int xPos, int yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
     }
 
-    public double getX() {
+    public int getX() {
         return xPos;
     }
 
-    public double getY() {
+    public int getY() {
         return yPos;
     }
 
-    public double distantTo(Position p) {
+    public int distantTo(Position p) {
         // Calculate manhattan distant from this to p
         return Math.abs((getX() - p.getX())) + Math.abs((getY() - p.getY()));
     }
@@ -42,23 +42,20 @@ public class Position implements Serializable {
             if (currentScore < 8) return 1;
             totalDist += currentScore;
         }
-        return totalDist;
+        return totalDist + 1;
     }
 
-    public static boolean validPos(Position pos, World world) {
-        return pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < world.getWidth() && pos.getY() < world.getHeight();
-    }
-    public static boolean validPos(Position pos, WorldMap world) {
-        return pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < world.getWidth() && pos.getY() < world.getHeight();
+    public static boolean validPos(Position pos, WorldChunk chunk) {
+        return pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < chunk.width && pos.getY() < chunk.height;
     }
     public static boolean validPos(Position pos, int worldWidth, int worldHeight) {
         return pos.getX() >= 0 && pos.getY() >= 0 && pos.getX() < worldWidth && pos.getY() < worldHeight;
     }
-    public static boolean validPos(double x, double y, World world) {
-        return x >= 0 && y >= 0 && x < world.getWidth() && y < world.getHeight();
-    }
     public static boolean validPos(double x, double y, int worldWidth, int worldHeight) {
         return x >= 0 && y >= 0 && x < worldWidth && y < worldHeight;
+    }
+    public static boolean validPos(double x, double y, WorldChunk chunk) {
+        return x >= 0 && y >= 0 && x < chunk.width && y < chunk.height;
     }
 
     public boolean isPosInteger() {
@@ -66,5 +63,20 @@ public class Position implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Double.hashCode(xPos) + Double.hashCode(yPos) + "Position".hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        try {
+            Position thatPos = (Position) o;
+            return thatPos.getX() == getX() && thatPos.getY() == getY();
+        } catch (ClassCastException e) {
+            return false;
+        }
     }
 }

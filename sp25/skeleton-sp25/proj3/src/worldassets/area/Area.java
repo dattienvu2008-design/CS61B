@@ -1,7 +1,8 @@
-package worldassets;
+package worldassets.area;
 
 import world.World;
-import world.WorldMap;
+import world.WorldChunk;
+import worldassets.Position;
 
 import java.io.Serializable;
 
@@ -24,7 +25,7 @@ public class Area implements Serializable {
      * @param width width of this area
      * @param height height/length of this area
     * */
-    public Area(Position pos, int width, int height, WorldMap map) {
+    public Area(Position pos, int width, int height, WorldChunk map) {
         position = pos;
         this.width = width;
         this.height = height;
@@ -55,7 +56,7 @@ public class Area implements Serializable {
 
     public int distantFromCenterTo(Area a) {
         // Calculate manhattan distant from this to a
-        return (int) this.getCenter().distantTo(a.getCenter());
+        return this.getCenter().distantTo(a.getCenter());
     }
 
     /**
@@ -66,14 +67,14 @@ public class Area implements Serializable {
      * @param world the world
      * @return Position Object at top left corner
      */
-    public static Position centerToTopLeftPos(Position center, int w, int h, World world) {
-        int newX = (int) (center.getX() - w/2);
-        int newY = (int) (center.getY() + h/2);
+    public static Position centerToTopLeftPos(Position center, int w, int h, WorldChunk world) {
+        int newX = (center.getX() - w/2);
+        int newY = (center.getY() + h/2);
         if (!Position.validPos(new Position(newX, 0), world)) {
             newX = 0;
         }
         if (!Position.validPos(new Position(0, newY), world)) {
-            newY = world.getHeight() - 1;
+            newY = world.height - 1;
         }
         return new Position(newX, newY);
     }
@@ -86,9 +87,9 @@ public class Area implements Serializable {
     }
 
     public boolean isOverlapped(Area area) {
-        double thisLeftSide = this.getPosition().getX();
-        double thisRightSide = this.getPosition().getX() + width - 1;
-        double thisTopSide = this.getPosition().getY();
+        int thisLeftSide = this.getPosition().getX();
+        int thisRightSide = this.getPosition().getX() + width - 1;
+        int thisTopSide = this.getPosition().getY();
         double thisBottomSide = this.getPosition().getY() - height + 1;
 
         double areaLeftSide = area.getPosition().getX();

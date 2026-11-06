@@ -1,7 +1,7 @@
 package Entity.Action;
 
 import worldassets.Direction;
-import worldassets.Tile;
+import worldassets.tile.Tile;
 
 public interface AttackSkill {
     double damage = 0;
